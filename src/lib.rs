@@ -451,6 +451,7 @@ impl<Fun, Ret, A, B, C, D, E, F, G> FnMetadataExt<Fun, Ret, (A, B, C, D, E, F, G
 where
     Fun: FnOnce(A, B, C, D, E, F, G) -> Ret,
 {
+    #[allow(clippy::type_complexity)]
     fn meta(&self) -> FnMetadata<Fun, Ret, (A, B, C, D, E, F, G)> {
         FnMetadata(PhantomData)
     }
