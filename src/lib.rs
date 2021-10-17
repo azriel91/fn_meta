@@ -42,8 +42,9 @@ pub enum AccessKind {
 
 /// Extracts the [`AccessKind`] for a function parameter.
 pub trait AccessKindExt {
-    /// Returns the [`AccessKind`] of the parameter.
-    fn access_kind() -> AccessKind;
+    /// [`AccessKind`] of the parameter.
+    const ACCESS_KIND: AccessKind;
+
     /// Returns the [`TypeId`] of the type being accessed.
     ///
     /// Notably, `T`, `&T`, and `&mut T` all have distinct `TypeId`s.
@@ -62,9 +63,7 @@ impl<T> AccessKindExt for &T
 where
     T: 'static,
 {
-    fn access_kind() -> AccessKind {
-        AccessKind::Read
-    }
+    const ACCESS_KIND: AccessKind = AccessKind::Read;
 
     fn inner_type_id() -> TypeId {
         TypeId::of::<T>()
@@ -75,9 +74,7 @@ impl<T> AccessKindExt for &mut T
 where
     T: 'static,
 {
-    fn access_kind() -> AccessKind {
-        AccessKind::Write
-    }
+    const ACCESS_KIND: AccessKind = AccessKind::Write;
 
     fn inner_type_id() -> TypeId {
         TypeId::of::<T>()
@@ -94,7 +91,7 @@ where
 {
     pub fn reads(&self) -> Vec<TypeId> {
         let mut type_ids = alloc::vec![];
-        if A::access_kind() == AccessKind::Read {
+        if A::ACCESS_KIND == AccessKind::Read {
             type_ids.push(A::inner_type_id());
         }
         type_ids
@@ -102,7 +99,7 @@ where
 
     pub fn writes(&self) -> Vec<TypeId> {
         let mut type_ids = alloc::vec![];
-        if A::access_kind() == AccessKind::Write {
+        if A::ACCESS_KIND == AccessKind::Write {
             type_ids.push(A::inner_type_id());
         }
         type_ids
@@ -117,10 +114,10 @@ where
 {
     pub fn reads(&self) -> Vec<TypeId> {
         let mut type_ids = alloc::vec![];
-        if A::access_kind() == AccessKind::Read {
+        if A::ACCESS_KIND == AccessKind::Read {
             type_ids.push(A::inner_type_id());
         }
-        if B::access_kind() == AccessKind::Read {
+        if B::ACCESS_KIND == AccessKind::Read {
             type_ids.push(B::inner_type_id());
         }
         type_ids
@@ -128,10 +125,10 @@ where
 
     pub fn writes(&self) -> Vec<TypeId> {
         let mut type_ids = alloc::vec![];
-        if A::access_kind() == AccessKind::Write {
+        if A::ACCESS_KIND == AccessKind::Write {
             type_ids.push(A::inner_type_id());
         }
-        if B::access_kind() == AccessKind::Write {
+        if B::ACCESS_KIND == AccessKind::Write {
             type_ids.push(B::inner_type_id());
         }
         type_ids
@@ -147,13 +144,13 @@ where
 {
     pub fn reads(&self) -> Vec<TypeId> {
         let mut type_ids = alloc::vec![];
-        if A::access_kind() == AccessKind::Read {
+        if A::ACCESS_KIND == AccessKind::Read {
             type_ids.push(A::inner_type_id());
         }
-        if B::access_kind() == AccessKind::Read {
+        if B::ACCESS_KIND == AccessKind::Read {
             type_ids.push(B::inner_type_id());
         }
-        if C::access_kind() == AccessKind::Read {
+        if C::ACCESS_KIND == AccessKind::Read {
             type_ids.push(C::inner_type_id());
         }
         type_ids
@@ -161,13 +158,13 @@ where
 
     pub fn writes(&self) -> Vec<TypeId> {
         let mut type_ids = alloc::vec![];
-        if A::access_kind() == AccessKind::Write {
+        if A::ACCESS_KIND == AccessKind::Write {
             type_ids.push(A::inner_type_id());
         }
-        if B::access_kind() == AccessKind::Write {
+        if B::ACCESS_KIND == AccessKind::Write {
             type_ids.push(B::inner_type_id());
         }
-        if C::access_kind() == AccessKind::Write {
+        if C::ACCESS_KIND == AccessKind::Write {
             type_ids.push(C::inner_type_id());
         }
         type_ids
@@ -184,16 +181,16 @@ where
 {
     pub fn reads(&self) -> Vec<TypeId> {
         let mut type_ids = alloc::vec![];
-        if A::access_kind() == AccessKind::Read {
+        if A::ACCESS_KIND == AccessKind::Read {
             type_ids.push(A::inner_type_id());
         }
-        if B::access_kind() == AccessKind::Read {
+        if B::ACCESS_KIND == AccessKind::Read {
             type_ids.push(B::inner_type_id());
         }
-        if C::access_kind() == AccessKind::Read {
+        if C::ACCESS_KIND == AccessKind::Read {
             type_ids.push(C::inner_type_id());
         }
-        if D::access_kind() == AccessKind::Read {
+        if D::ACCESS_KIND == AccessKind::Read {
             type_ids.push(D::inner_type_id());
         }
         type_ids
@@ -201,16 +198,16 @@ where
 
     pub fn writes(&self) -> Vec<TypeId> {
         let mut type_ids = alloc::vec![];
-        if A::access_kind() == AccessKind::Write {
+        if A::ACCESS_KIND == AccessKind::Write {
             type_ids.push(A::inner_type_id());
         }
-        if B::access_kind() == AccessKind::Write {
+        if B::ACCESS_KIND == AccessKind::Write {
             type_ids.push(B::inner_type_id());
         }
-        if C::access_kind() == AccessKind::Write {
+        if C::ACCESS_KIND == AccessKind::Write {
             type_ids.push(C::inner_type_id());
         }
-        if D::access_kind() == AccessKind::Write {
+        if D::ACCESS_KIND == AccessKind::Write {
             type_ids.push(D::inner_type_id());
         }
         type_ids
@@ -228,19 +225,19 @@ where
 {
     pub fn reads(&self) -> Vec<TypeId> {
         let mut type_ids = alloc::vec![];
-        if A::access_kind() == AccessKind::Read {
+        if A::ACCESS_KIND == AccessKind::Read {
             type_ids.push(A::inner_type_id());
         }
-        if B::access_kind() == AccessKind::Read {
+        if B::ACCESS_KIND == AccessKind::Read {
             type_ids.push(B::inner_type_id());
         }
-        if C::access_kind() == AccessKind::Read {
+        if C::ACCESS_KIND == AccessKind::Read {
             type_ids.push(C::inner_type_id());
         }
-        if D::access_kind() == AccessKind::Read {
+        if D::ACCESS_KIND == AccessKind::Read {
             type_ids.push(D::inner_type_id());
         }
-        if E::access_kind() == AccessKind::Read {
+        if E::ACCESS_KIND == AccessKind::Read {
             type_ids.push(E::inner_type_id());
         }
         type_ids
@@ -248,19 +245,19 @@ where
 
     pub fn writes(&self) -> Vec<TypeId> {
         let mut type_ids = alloc::vec![];
-        if A::access_kind() == AccessKind::Write {
+        if A::ACCESS_KIND == AccessKind::Write {
             type_ids.push(A::inner_type_id());
         }
-        if B::access_kind() == AccessKind::Write {
+        if B::ACCESS_KIND == AccessKind::Write {
             type_ids.push(B::inner_type_id());
         }
-        if C::access_kind() == AccessKind::Write {
+        if C::ACCESS_KIND == AccessKind::Write {
             type_ids.push(C::inner_type_id());
         }
-        if D::access_kind() == AccessKind::Write {
+        if D::ACCESS_KIND == AccessKind::Write {
             type_ids.push(D::inner_type_id());
         }
-        if E::access_kind() == AccessKind::Write {
+        if E::ACCESS_KIND == AccessKind::Write {
             type_ids.push(E::inner_type_id());
         }
         type_ids
@@ -279,22 +276,22 @@ where
 {
     pub fn reads(&self) -> Vec<TypeId> {
         let mut type_ids = alloc::vec![];
-        if A::access_kind() == AccessKind::Read {
+        if A::ACCESS_KIND == AccessKind::Read {
             type_ids.push(A::inner_type_id());
         }
-        if B::access_kind() == AccessKind::Read {
+        if B::ACCESS_KIND == AccessKind::Read {
             type_ids.push(B::inner_type_id());
         }
-        if C::access_kind() == AccessKind::Read {
+        if C::ACCESS_KIND == AccessKind::Read {
             type_ids.push(C::inner_type_id());
         }
-        if D::access_kind() == AccessKind::Read {
+        if D::ACCESS_KIND == AccessKind::Read {
             type_ids.push(D::inner_type_id());
         }
-        if E::access_kind() == AccessKind::Read {
+        if E::ACCESS_KIND == AccessKind::Read {
             type_ids.push(E::inner_type_id());
         }
-        if F::access_kind() == AccessKind::Read {
+        if F::ACCESS_KIND == AccessKind::Read {
             type_ids.push(F::inner_type_id());
         }
         type_ids
@@ -302,22 +299,22 @@ where
 
     pub fn writes(&self) -> Vec<TypeId> {
         let mut type_ids = alloc::vec![];
-        if A::access_kind() == AccessKind::Write {
+        if A::ACCESS_KIND == AccessKind::Write {
             type_ids.push(A::inner_type_id());
         }
-        if B::access_kind() == AccessKind::Write {
+        if B::ACCESS_KIND == AccessKind::Write {
             type_ids.push(B::inner_type_id());
         }
-        if C::access_kind() == AccessKind::Write {
+        if C::ACCESS_KIND == AccessKind::Write {
             type_ids.push(C::inner_type_id());
         }
-        if D::access_kind() == AccessKind::Write {
+        if D::ACCESS_KIND == AccessKind::Write {
             type_ids.push(D::inner_type_id());
         }
-        if E::access_kind() == AccessKind::Write {
+        if E::ACCESS_KIND == AccessKind::Write {
             type_ids.push(E::inner_type_id());
         }
-        if F::access_kind() == AccessKind::Write {
+        if F::ACCESS_KIND == AccessKind::Write {
             type_ids.push(F::inner_type_id());
         }
         type_ids
@@ -337,25 +334,25 @@ where
 {
     pub fn reads(&self) -> Vec<TypeId> {
         let mut type_ids = alloc::vec![];
-        if A::access_kind() == AccessKind::Read {
+        if A::ACCESS_KIND == AccessKind::Read {
             type_ids.push(A::inner_type_id());
         }
-        if B::access_kind() == AccessKind::Read {
+        if B::ACCESS_KIND == AccessKind::Read {
             type_ids.push(B::inner_type_id());
         }
-        if C::access_kind() == AccessKind::Read {
+        if C::ACCESS_KIND == AccessKind::Read {
             type_ids.push(C::inner_type_id());
         }
-        if D::access_kind() == AccessKind::Read {
+        if D::ACCESS_KIND == AccessKind::Read {
             type_ids.push(D::inner_type_id());
         }
-        if E::access_kind() == AccessKind::Read {
+        if E::ACCESS_KIND == AccessKind::Read {
             type_ids.push(E::inner_type_id());
         }
-        if F::access_kind() == AccessKind::Read {
+        if F::ACCESS_KIND == AccessKind::Read {
             type_ids.push(F::inner_type_id());
         }
-        if G::access_kind() == AccessKind::Read {
+        if G::ACCESS_KIND == AccessKind::Read {
             type_ids.push(G::inner_type_id());
         }
         type_ids
@@ -363,25 +360,25 @@ where
 
     pub fn writes(&self) -> Vec<TypeId> {
         let mut type_ids = alloc::vec![];
-        if A::access_kind() == AccessKind::Write {
+        if A::ACCESS_KIND == AccessKind::Write {
             type_ids.push(A::inner_type_id());
         }
-        if B::access_kind() == AccessKind::Write {
+        if B::ACCESS_KIND == AccessKind::Write {
             type_ids.push(B::inner_type_id());
         }
-        if C::access_kind() == AccessKind::Write {
+        if C::ACCESS_KIND == AccessKind::Write {
             type_ids.push(C::inner_type_id());
         }
-        if D::access_kind() == AccessKind::Write {
+        if D::ACCESS_KIND == AccessKind::Write {
             type_ids.push(D::inner_type_id());
         }
-        if E::access_kind() == AccessKind::Write {
+        if E::ACCESS_KIND == AccessKind::Write {
             type_ids.push(E::inner_type_id());
         }
-        if F::access_kind() == AccessKind::Write {
+        if F::ACCESS_KIND == AccessKind::Write {
             type_ids.push(F::inner_type_id());
         }
-        if G::access_kind() == AccessKind::Write {
+        if G::ACCESS_KIND == AccessKind::Write {
             type_ids.push(G::inner_type_id());
         }
         type_ids
