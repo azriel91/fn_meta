@@ -1,4 +1,5 @@
 [default]
+exclude-files = ["lib_impl.rs"]
 
 [report]
 out = ["Html", "Xml"]

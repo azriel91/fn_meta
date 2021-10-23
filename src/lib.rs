@@ -26,364 +26,12 @@
 //! # struct S2;
 //! ```
 
-extern crate alloc;
-
-use alloc::vec::Vec;
 use core::{any::TypeId, marker::PhantomData};
-
-/// Whether the parameter is immutable or mutable.
-#[derive(Clone, Copy, Debug, PartialEq, Eq)]
-pub enum AccessKind {
-    /// Read / shareable access.
-    Read,
-    /// Write / exclusive access.
-    Write,
-}
-
-/// Extracts the [`AccessKind`] for a function parameter.
-pub trait AccessKindExt {
-    /// [`AccessKind`] of the parameter.
-    const ACCESS_KIND: AccessKind;
-
-    /// Returns the [`TypeId`] of the type being accessed.
-    ///
-    /// Notably, `T`, `&T`, and `&mut T` all have distinct `TypeId`s.
-    ///
-    /// ```rust
-    /// # use core::any::TypeId;
-    /// struct T;
-    /// assert_ne!(TypeId::of::<T>(), TypeId::of::<&T>());
-    /// assert_ne!(TypeId::of::<T>(), TypeId::of::<&mut T>());
-    /// assert_ne!(TypeId::of::<&T>(), TypeId::of::<&mut T>());
-    /// ```
-    fn inner_type_id() -> TypeId;
-}
-
-impl<T> AccessKindExt for &T
-where
-    T: 'static,
-{
-    const ACCESS_KIND: AccessKind = AccessKind::Read;
-
-    fn inner_type_id() -> TypeId {
-        TypeId::of::<T>()
-    }
-}
-
-impl<T> AccessKindExt for &mut T
-where
-    T: 'static,
-{
-    const ACCESS_KIND: AccessKind = AccessKind::Write;
-
-    fn inner_type_id() -> TypeId {
-        TypeId::of::<T>()
-    }
-}
 
 /// Metadata about a function
 pub struct FnMetadata<Fun, Ret, Args>(PhantomData<(Fun, Ret, Args)>);
 
-impl<Fun, Ret, A> FnMetadata<Fun, Ret, (A,)>
-where
-    Fun: FnOnce(A) -> Ret,
-    A: AccessKindExt + 'static,
-{
-    pub fn reads(&self) -> Vec<TypeId> {
-        let mut type_ids = alloc::vec![];
-        if A::ACCESS_KIND == AccessKind::Read {
-            type_ids.push(A::inner_type_id());
-        }
-        type_ids
-    }
-
-    pub fn writes(&self) -> Vec<TypeId> {
-        let mut type_ids = alloc::vec![];
-        if A::ACCESS_KIND == AccessKind::Write {
-            type_ids.push(A::inner_type_id());
-        }
-        type_ids
-    }
-}
-
-impl<Fun, Ret, A, B> FnMetadata<Fun, Ret, (A, B)>
-where
-    Fun: FnOnce(A, B) -> Ret,
-    A: AccessKindExt + 'static,
-    B: AccessKindExt + 'static,
-{
-    pub fn reads(&self) -> Vec<TypeId> {
-        let mut type_ids = alloc::vec![];
-        if A::ACCESS_KIND == AccessKind::Read {
-            type_ids.push(A::inner_type_id());
-        }
-        if B::ACCESS_KIND == AccessKind::Read {
-            type_ids.push(B::inner_type_id());
-        }
-        type_ids
-    }
-
-    pub fn writes(&self) -> Vec<TypeId> {
-        let mut type_ids = alloc::vec![];
-        if A::ACCESS_KIND == AccessKind::Write {
-            type_ids.push(A::inner_type_id());
-        }
-        if B::ACCESS_KIND == AccessKind::Write {
-            type_ids.push(B::inner_type_id());
-        }
-        type_ids
-    }
-}
-
-impl<Fun, Ret, A, B, C> FnMetadata<Fun, Ret, (A, B, C)>
-where
-    Fun: FnOnce(A, B, C) -> Ret,
-    A: AccessKindExt + 'static,
-    B: AccessKindExt + 'static,
-    C: AccessKindExt + 'static,
-{
-    pub fn reads(&self) -> Vec<TypeId> {
-        let mut type_ids = alloc::vec![];
-        if A::ACCESS_KIND == AccessKind::Read {
-            type_ids.push(A::inner_type_id());
-        }
-        if B::ACCESS_KIND == AccessKind::Read {
-            type_ids.push(B::inner_type_id());
-        }
-        if C::ACCESS_KIND == AccessKind::Read {
-            type_ids.push(C::inner_type_id());
-        }
-        type_ids
-    }
-
-    pub fn writes(&self) -> Vec<TypeId> {
-        let mut type_ids = alloc::vec![];
-        if A::ACCESS_KIND == AccessKind::Write {
-            type_ids.push(A::inner_type_id());
-        }
-        if B::ACCESS_KIND == AccessKind::Write {
-            type_ids.push(B::inner_type_id());
-        }
-        if C::ACCESS_KIND == AccessKind::Write {
-            type_ids.push(C::inner_type_id());
-        }
-        type_ids
-    }
-}
-
-impl<Fun, Ret, A, B, C, D> FnMetadata<Fun, Ret, (A, B, C, D)>
-where
-    Fun: FnOnce(A, B, C, D) -> Ret,
-    A: AccessKindExt + 'static,
-    B: AccessKindExt + 'static,
-    C: AccessKindExt + 'static,
-    D: AccessKindExt + 'static,
-{
-    pub fn reads(&self) -> Vec<TypeId> {
-        let mut type_ids = alloc::vec![];
-        if A::ACCESS_KIND == AccessKind::Read {
-            type_ids.push(A::inner_type_id());
-        }
-        if B::ACCESS_KIND == AccessKind::Read {
-            type_ids.push(B::inner_type_id());
-        }
-        if C::ACCESS_KIND == AccessKind::Read {
-            type_ids.push(C::inner_type_id());
-        }
-        if D::ACCESS_KIND == AccessKind::Read {
-            type_ids.push(D::inner_type_id());
-        }
-        type_ids
-    }
-
-    pub fn writes(&self) -> Vec<TypeId> {
-        let mut type_ids = alloc::vec![];
-        if A::ACCESS_KIND == AccessKind::Write {
-            type_ids.push(A::inner_type_id());
-        }
-        if B::ACCESS_KIND == AccessKind::Write {
-            type_ids.push(B::inner_type_id());
-        }
-        if C::ACCESS_KIND == AccessKind::Write {
-            type_ids.push(C::inner_type_id());
-        }
-        if D::ACCESS_KIND == AccessKind::Write {
-            type_ids.push(D::inner_type_id());
-        }
-        type_ids
-    }
-}
-
-impl<Fun, Ret, A, B, C, D, E> FnMetadata<Fun, Ret, (A, B, C, D, E)>
-where
-    Fun: FnOnce(A, B, C, D, E) -> Ret,
-    A: AccessKindExt + 'static,
-    B: AccessKindExt + 'static,
-    C: AccessKindExt + 'static,
-    D: AccessKindExt + 'static,
-    E: AccessKindExt + 'static,
-{
-    pub fn reads(&self) -> Vec<TypeId> {
-        let mut type_ids = alloc::vec![];
-        if A::ACCESS_KIND == AccessKind::Read {
-            type_ids.push(A::inner_type_id());
-        }
-        if B::ACCESS_KIND == AccessKind::Read {
-            type_ids.push(B::inner_type_id());
-        }
-        if C::ACCESS_KIND == AccessKind::Read {
-            type_ids.push(C::inner_type_id());
-        }
-        if D::ACCESS_KIND == AccessKind::Read {
-            type_ids.push(D::inner_type_id());
-        }
-        if E::ACCESS_KIND == AccessKind::Read {
-            type_ids.push(E::inner_type_id());
-        }
-        type_ids
-    }
-
-    pub fn writes(&self) -> Vec<TypeId> {
-        let mut type_ids = alloc::vec![];
-        if A::ACCESS_KIND == AccessKind::Write {
-            type_ids.push(A::inner_type_id());
-        }
-        if B::ACCESS_KIND == AccessKind::Write {
-            type_ids.push(B::inner_type_id());
-        }
-        if C::ACCESS_KIND == AccessKind::Write {
-            type_ids.push(C::inner_type_id());
-        }
-        if D::ACCESS_KIND == AccessKind::Write {
-            type_ids.push(D::inner_type_id());
-        }
-        if E::ACCESS_KIND == AccessKind::Write {
-            type_ids.push(E::inner_type_id());
-        }
-        type_ids
-    }
-}
-
-impl<Fun, Ret, A, B, C, D, E, F> FnMetadata<Fun, Ret, (A, B, C, D, E, F)>
-where
-    Fun: FnOnce(A, B, C, D, E, F) -> Ret,
-    A: AccessKindExt + 'static,
-    B: AccessKindExt + 'static,
-    C: AccessKindExt + 'static,
-    D: AccessKindExt + 'static,
-    E: AccessKindExt + 'static,
-    F: AccessKindExt + 'static,
-{
-    pub fn reads(&self) -> Vec<TypeId> {
-        let mut type_ids = alloc::vec![];
-        if A::ACCESS_KIND == AccessKind::Read {
-            type_ids.push(A::inner_type_id());
-        }
-        if B::ACCESS_KIND == AccessKind::Read {
-            type_ids.push(B::inner_type_id());
-        }
-        if C::ACCESS_KIND == AccessKind::Read {
-            type_ids.push(C::inner_type_id());
-        }
-        if D::ACCESS_KIND == AccessKind::Read {
-            type_ids.push(D::inner_type_id());
-        }
-        if E::ACCESS_KIND == AccessKind::Read {
-            type_ids.push(E::inner_type_id());
-        }
-        if F::ACCESS_KIND == AccessKind::Read {
-            type_ids.push(F::inner_type_id());
-        }
-        type_ids
-    }
-
-    pub fn writes(&self) -> Vec<TypeId> {
-        let mut type_ids = alloc::vec![];
-        if A::ACCESS_KIND == AccessKind::Write {
-            type_ids.push(A::inner_type_id());
-        }
-        if B::ACCESS_KIND == AccessKind::Write {
-            type_ids.push(B::inner_type_id());
-        }
-        if C::ACCESS_KIND == AccessKind::Write {
-            type_ids.push(C::inner_type_id());
-        }
-        if D::ACCESS_KIND == AccessKind::Write {
-            type_ids.push(D::inner_type_id());
-        }
-        if E::ACCESS_KIND == AccessKind::Write {
-            type_ids.push(E::inner_type_id());
-        }
-        if F::ACCESS_KIND == AccessKind::Write {
-            type_ids.push(F::inner_type_id());
-        }
-        type_ids
-    }
-}
-
-impl<Fun, Ret, A, B, C, D, E, F, G> FnMetadata<Fun, Ret, (A, B, C, D, E, F, G)>
-where
-    Fun: FnOnce(A, B, C, D, E, F, G) -> Ret,
-    A: AccessKindExt + 'static,
-    B: AccessKindExt + 'static,
-    C: AccessKindExt + 'static,
-    D: AccessKindExt + 'static,
-    E: AccessKindExt + 'static,
-    F: AccessKindExt + 'static,
-    G: AccessKindExt + 'static,
-{
-    pub fn reads(&self) -> Vec<TypeId> {
-        let mut type_ids = alloc::vec![];
-        if A::ACCESS_KIND == AccessKind::Read {
-            type_ids.push(A::inner_type_id());
-        }
-        if B::ACCESS_KIND == AccessKind::Read {
-            type_ids.push(B::inner_type_id());
-        }
-        if C::ACCESS_KIND == AccessKind::Read {
-            type_ids.push(C::inner_type_id());
-        }
-        if D::ACCESS_KIND == AccessKind::Read {
-            type_ids.push(D::inner_type_id());
-        }
-        if E::ACCESS_KIND == AccessKind::Read {
-            type_ids.push(E::inner_type_id());
-        }
-        if F::ACCESS_KIND == AccessKind::Read {
-            type_ids.push(F::inner_type_id());
-        }
-        if G::ACCESS_KIND == AccessKind::Read {
-            type_ids.push(G::inner_type_id());
-        }
-        type_ids
-    }
-
-    pub fn writes(&self) -> Vec<TypeId> {
-        let mut type_ids = alloc::vec![];
-        if A::ACCESS_KIND == AccessKind::Write {
-            type_ids.push(A::inner_type_id());
-        }
-        if B::ACCESS_KIND == AccessKind::Write {
-            type_ids.push(B::inner_type_id());
-        }
-        if C::ACCESS_KIND == AccessKind::Write {
-            type_ids.push(C::inner_type_id());
-        }
-        if D::ACCESS_KIND == AccessKind::Write {
-            type_ids.push(D::inner_type_id());
-        }
-        if E::ACCESS_KIND == AccessKind::Write {
-            type_ids.push(E::inner_type_id());
-        }
-        if F::ACCESS_KIND == AccessKind::Write {
-            type_ids.push(F::inner_type_id());
-        }
-        if G::ACCESS_KIND == AccessKind::Write {
-            type_ids.push(G::inner_type_id());
-        }
-        type_ids
-    }
-}
+include!(concat!(env!("OUT_DIR"), "/lib_impl.rs"));
 
 /// Extension to return [`FnMetadata`] for a function.
 pub trait FnMetadataExt<Fun, Ret, Args> {
@@ -652,24 +300,41 @@ mod tests {
         );
     }
 
+    #[cfg(not(tarpaulin_include))]
     fn f_r1(_: &S0) -> () {}
+    #[cfg(not(tarpaulin_include))]
     fn f_r2(_: &S0, _: &S1) -> () {}
+    #[cfg(not(tarpaulin_include))]
     fn f_r3(_: &S0, _: &S1, _: &S2) -> () {}
+    #[cfg(not(tarpaulin_include))]
     fn f_r4(_: &S0, _: &S1, _: &S2, _: &S3) -> () {}
+    #[cfg(not(tarpaulin_include))]
     fn f_r5(_: &S0, _: &S1, _: &S2, _: &S3, _: &S4) -> () {}
+    #[cfg(not(tarpaulin_include))]
     fn f_r6(_: &S0, _: &S1, _: &S2, _: &S3, _: &S4, _: &S5) -> () {}
 
+    #[cfg(not(tarpaulin_include))]
     fn f_w1(_: &mut S0) -> () {}
+    #[cfg(not(tarpaulin_include))]
     fn f_w2(_: &mut S0, _: &mut S1) -> () {}
+    #[cfg(not(tarpaulin_include))]
     fn f_w3(_: &mut S0, _: &mut S1, _: &mut S2) -> () {}
+    #[cfg(not(tarpaulin_include))]
     fn f_w4(_: &mut S0, _: &mut S1, _: &mut S2, _: &mut S3) -> () {}
+    #[cfg(not(tarpaulin_include))]
     fn f_w5(_: &mut S0, _: &mut S1, _: &mut S2, _: &mut S3, _: &mut S4) -> () {}
+    #[cfg(not(tarpaulin_include))]
     fn f_w6(_: &mut S0, _: &mut S1, _: &mut S2, _: &mut S3, _: &mut S4, _: &mut S5) -> () {}
 
+    #[cfg(not(tarpaulin_include))]
     fn f_r1_w1(_: &S0, _: &mut S1) -> () {}
+    #[cfg(not(tarpaulin_include))]
     fn f_w1_r1(_: &mut S0, _: &S1) -> () {}
+    #[cfg(not(tarpaulin_include))]
     fn f_r1_w1_r1(_: &S0, _: &mut S1, _: &S2) -> () {}
+    #[cfg(not(tarpaulin_include))]
     fn f_w1_r1_w1(_: &mut S0, _: &S1, _: &mut S2) -> () {}
+    #[cfg(not(tarpaulin_include))]
     fn f_w2_r2_w2_r1(_: &mut S0, _: &mut S1, _: &S2, _: &S3, _: &mut S4, _: &mut S5, _: &S6) -> () {
     }
 

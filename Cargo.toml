@@ -9,6 +9,3 @@ documentation = "https://docs.rs/fn_meta/"
 readme = "README.md"
 keywords = ["function", "meta", "metadata", "no_std"]
 license = "MIT OR Apache-2.0"
-
-[workspace]
-members = ["fn_meta_gen"]

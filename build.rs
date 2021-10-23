@@ -1,4 +1,35 @@
-use std::{fmt::Write, mem::MaybeUninit};
+use std::{env, fmt::Write as _, fs::OpenOptions, io::Write, mem::MaybeUninit, path::Path};
+
+fn main() {
+    let out_dir = env::var_os("OUT_DIR").expect("Failed to read `OUT_DIR` environment variable.");
+    let lib_impl_path = Path::new(&out_dir).join("lib_impl.rs");
+    let mut lib_impl = OpenOptions::new()
+        .create(true)
+        .write(true)
+        .open(lib_impl_path)
+        .expect("Failed to open `lib_impl.rs`.");
+
+    write!(lib_impl, "{}", generate_impls_for_n_args::<1>())
+        .expect("Failed to write to lib_impl.rs");
+    write!(lib_impl, "{}", generate_impls_for_n_args::<2>())
+        .expect("Failed to write to lib_impl.rs");
+    write!(lib_impl, "{}", generate_impls_for_n_args::<3>())
+        .expect("Failed to write to lib_impl.rs");
+    write!(lib_impl, "{}", generate_impls_for_n_args::<4>())
+        .expect("Failed to write to lib_impl.rs");
+    write!(lib_impl, "{}", generate_impls_for_n_args::<5>())
+        .expect("Failed to write to lib_impl.rs");
+    write!(lib_impl, "{}", generate_impls_for_n_args::<6>())
+        .expect("Failed to write to lib_impl.rs");
+    write!(lib_impl, "{}", generate_impls_for_n_args::<7>())
+        .expect("Failed to write to lib_impl.rs");
+
+    lib_impl
+        .flush()
+        .expect("Failed to flush writer for lib_impl.rs");
+
+    println!("cargo:rerun-if-changed=build.rs");
+}
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 enum Ref {
@@ -198,14 +229,4 @@ fn args_csv<const N: usize>() -> String {
         })
     };
     args_csv
-}
-
-fn main() {
-    println!("{}", generate_impls_for_n_args::<1>());
-    println!("{}", generate_impls_for_n_args::<2>());
-    println!("{}", generate_impls_for_n_args::<3>());
-    println!("{}", generate_impls_for_n_args::<4>());
-    println!("{}", generate_impls_for_n_args::<5>());
-    println!("{}", generate_impls_for_n_args::<6>());
-    println!("{}", generate_impls_for_n_args::<7>());
 }
