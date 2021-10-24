@@ -16,10 +16,10 @@
 //! let fn_metadata = my_function.meta();
 //!
 //! assert_eq!(
-//!     alloc::vec![TypeId::of::<S0>(), TypeId::of::<S2>()],
+//!     [TypeId::of::<S0>(), TypeId::of::<S2>()],
 //!     fn_metadata.reads()
 //! );
-//! assert_eq!(alloc::vec![TypeId::of::<S1>()], fn_metadata.writes());
+//! assert_eq!([TypeId::of::<S1>()], fn_metadata.writes());
 //! #
 //! # struct S0;
 //! # struct S1;
@@ -104,8 +104,6 @@ where
 
 #[cfg(test)]
 mod tests {
-    extern crate alloc;
-
     use core::any::TypeId;
 
     use super::FnMetadataExt;
@@ -113,33 +111,33 @@ mod tests {
     #[test]
     fn read_1_write_1() {
         let fn_metadata = f_r1_w1.meta();
-        assert_eq!(alloc::vec![TypeId::of::<S0>()], fn_metadata.reads());
-        assert_eq!(alloc::vec![TypeId::of::<S1>()], fn_metadata.writes());
+        assert_eq!([TypeId::of::<S0>()], fn_metadata.reads());
+        assert_eq!([TypeId::of::<S1>()], fn_metadata.writes());
     }
 
     #[test]
     fn write_1_read_1() {
         let fn_metadata = f_w1_r1.meta();
-        assert_eq!(alloc::vec![TypeId::of::<S1>()], fn_metadata.reads());
-        assert_eq!(alloc::vec![TypeId::of::<S0>()], fn_metadata.writes());
+        assert_eq!([TypeId::of::<S1>()], fn_metadata.reads());
+        assert_eq!([TypeId::of::<S0>()], fn_metadata.writes());
     }
 
     #[test]
     fn read_1_write_1_read_1() {
         let fn_metadata = f_r1_w1_r1.meta();
         assert_eq!(
-            alloc::vec![TypeId::of::<S0>(), TypeId::of::<S2>()],
+            [TypeId::of::<S0>(), TypeId::of::<S2>()],
             fn_metadata.reads()
         );
-        assert_eq!(alloc::vec![TypeId::of::<S1>()], fn_metadata.writes());
+        assert_eq!([TypeId::of::<S1>()], fn_metadata.writes());
     }
 
     #[test]
     fn write_1_read_1_write_1() {
         let fn_metadata = f_w1_r1_w1.meta();
-        assert_eq!(alloc::vec![TypeId::of::<S1>()], fn_metadata.reads());
+        assert_eq!([TypeId::of::<S1>()], fn_metadata.reads());
         assert_eq!(
-            alloc::vec![TypeId::of::<S0>(), TypeId::of::<S2>()],
+            [TypeId::of::<S0>(), TypeId::of::<S2>()],
             fn_metadata.writes()
         );
     }
@@ -148,11 +146,11 @@ mod tests {
     fn write_2_read_2_write_2_read_1() {
         let fn_metadata = f_w2_r2_w2_r1.meta();
         assert_eq!(
-            alloc::vec![TypeId::of::<S2>(), TypeId::of::<S3>(), TypeId::of::<S6>()],
+            [TypeId::of::<S2>(), TypeId::of::<S3>(), TypeId::of::<S6>()],
             fn_metadata.reads()
         );
         assert_eq!(
-            alloc::vec![
+            [
                 TypeId::of::<S0>(),
                 TypeId::of::<S1>(),
                 TypeId::of::<S4>(),
@@ -165,14 +163,14 @@ mod tests {
     #[test]
     fn read_1() {
         let fn_metadata = f_r1.meta();
-        assert_eq!(alloc::vec![TypeId::of::<S0>()], fn_metadata.reads());
+        assert_eq!([TypeId::of::<S0>()], fn_metadata.reads());
     }
 
     #[test]
     fn read_2() {
         let fn_metadata = f_r2.meta();
         assert_eq!(
-            alloc::vec![TypeId::of::<S0>(), TypeId::of::<S1>()],
+            [TypeId::of::<S0>(), TypeId::of::<S1>()],
             fn_metadata.reads()
         );
     }
@@ -181,7 +179,7 @@ mod tests {
     fn read_3() {
         let fn_metadata = f_r3.meta();
         assert_eq!(
-            alloc::vec![TypeId::of::<S0>(), TypeId::of::<S1>(), TypeId::of::<S2>(),],
+            [TypeId::of::<S0>(), TypeId::of::<S1>(), TypeId::of::<S2>(),],
             fn_metadata.reads()
         );
     }
@@ -190,7 +188,7 @@ mod tests {
     fn read_4() {
         let fn_metadata = f_r4.meta();
         assert_eq!(
-            alloc::vec![
+            [
                 TypeId::of::<S0>(),
                 TypeId::of::<S1>(),
                 TypeId::of::<S2>(),
@@ -204,7 +202,7 @@ mod tests {
     fn read_5() {
         let fn_metadata = f_r5.meta();
         assert_eq!(
-            alloc::vec![
+            [
                 TypeId::of::<S0>(),
                 TypeId::of::<S1>(),
                 TypeId::of::<S2>(),
@@ -219,7 +217,7 @@ mod tests {
     fn read_6() {
         let fn_metadata = f_r6.meta();
         assert_eq!(
-            alloc::vec![
+            [
                 TypeId::of::<S0>(),
                 TypeId::of::<S1>(),
                 TypeId::of::<S2>(),
@@ -234,14 +232,14 @@ mod tests {
     #[test]
     fn write_1() {
         let fn_metadata = f_w1.meta();
-        assert_eq!(alloc::vec![TypeId::of::<S0>()], fn_metadata.writes());
+        assert_eq!([TypeId::of::<S0>()], fn_metadata.writes());
     }
 
     #[test]
     fn write_2() {
         let fn_metadata = f_w2.meta();
         assert_eq!(
-            alloc::vec![TypeId::of::<S0>(), TypeId::of::<S1>()],
+            [TypeId::of::<S0>(), TypeId::of::<S1>()],
             fn_metadata.writes()
         );
     }
@@ -250,7 +248,7 @@ mod tests {
     fn write_3() {
         let fn_metadata = f_w3.meta();
         assert_eq!(
-            alloc::vec![TypeId::of::<S0>(), TypeId::of::<S1>(), TypeId::of::<S2>(),],
+            [TypeId::of::<S0>(), TypeId::of::<S1>(), TypeId::of::<S2>(),],
             fn_metadata.writes()
         );
     }
@@ -259,7 +257,7 @@ mod tests {
     fn write_4() {
         let fn_metadata = f_w4.meta();
         assert_eq!(
-            alloc::vec![
+            [
                 TypeId::of::<S0>(),
                 TypeId::of::<S1>(),
                 TypeId::of::<S2>(),
@@ -273,7 +271,7 @@ mod tests {
     fn write_5() {
         let fn_metadata = f_w5.meta();
         assert_eq!(
-            alloc::vec![
+            [
                 TypeId::of::<S0>(),
                 TypeId::of::<S1>(),
                 TypeId::of::<S2>(),
@@ -288,7 +286,7 @@ mod tests {
     fn write_6() {
         let fn_metadata = f_w6.meta();
         assert_eq!(
-            alloc::vec![
+            [
                 TypeId::of::<S0>(),
                 TypeId::of::<S1>(),
                 TypeId::of::<S2>(),
