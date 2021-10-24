@@ -207,26 +207,20 @@ fn arg_refs_combinations<const N: usize>() -> impl Iterator<Item = [Ref; N]> {
 }
 
 fn arg_bounds_list<const N: usize>() -> String {
-    let arg_bounds_list = {
-        let mut arg_bounds_list = String::with_capacity(N * 17);
-        arg_bounds_list.push_str("    A0: 'static,");
-        (1..N).fold(arg_bounds_list, |mut arg_bounds_list, n| {
-            write!(&mut arg_bounds_list, "\n    A{}: 'static,", n)
-                .expect("Failed to append to args_csv string.");
-            arg_bounds_list
-        })
-    };
-    arg_bounds_list
+    let mut arg_bounds_list = String::with_capacity(N * 17);
+    arg_bounds_list.push_str("    A0: 'static,");
+    (1..N).fold(arg_bounds_list, |mut arg_bounds_list, n| {
+        write!(&mut arg_bounds_list, "\n    A{}: 'static,", n)
+            .expect("Failed to append to args_csv string.");
+        arg_bounds_list
+    })
 }
 
 fn args_csv<const N: usize>() -> String {
-    let args_csv = {
-        let mut args_csv = String::with_capacity(N * 4);
-        args_csv.push_str("A0");
-        (1..N).fold(args_csv, |mut args_csv, n| {
-            write!(&mut args_csv, ", A{}", n).expect("Failed to append to args_csv string.");
-            args_csv
-        })
-    };
-    args_csv
+    let mut args_csv = String::with_capacity(N * 4);
+    args_csv.push_str("A0");
+    (1..N).fold(args_csv, |mut args_csv, n| {
+        write!(&mut args_csv, ", A{}", n).expect("Failed to append to args_csv string.");
+        args_csv
+    })
 }
