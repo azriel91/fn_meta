@@ -1,13 +1,21 @@
 # 🧬 FnMeta
 
 [![Crates.io](https://img.shields.io/crates/v/fn_meta.svg)](https://crates.io/crates/fn_meta)
-[![docs.rs](https://docs.rs/fn_meta/badge.svg)](https://docs.rs/fn_meta)
-![CI](https://github.com/azriel91/fn_meta/workflows/CI/badge.svg)
+[![docs.rs](https://img.shields.io/docsrs/fn_meta)](https://docs.rs/fn_meta)
+[![CI](https://github.com/azriel91/credent/workflows/CI/badge.svg)](https://github.com/azriel91/fn_meta/actions/workflows/ci.yml)
 [![Coverage Status](https://codecov.io/gh/azriel91/fn_meta/branch/main/graph/badge.svg)](https://codecov.io/gh/azriel91/fn_meta)
 
 Returns metadata about a function.
 
 # Examples
+
+Add the following to `Cargo.toml`
+
+```toml
+fn_meta = "0.1.0"
+```
+
+Code:
 
 ```rust
 use fn_meta::FnMetadataExt;
@@ -17,10 +25,10 @@ fn my_function(_: &S0, _: &mut S1, _: &S2) -> () {}
 let fn_metadata = my_function.meta();
 
 assert_eq!(
-    alloc::vec![TypeId::of::<S0>(), TypeId::of::<S2>()],
+    [TypeId::of::<S0>(), TypeId::of::<S2>()],
     fn_metadata.reads()
 );
-assert_eq!(alloc::vec![TypeId::of::<S1>()], fn_metadata.writes());
+assert_eq!([TypeId::of::<S1>()], fn_metadata.writes());
 
 struct S0;
 struct S1;

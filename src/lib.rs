@@ -3,10 +3,15 @@
 //! Returns metadata about a function.
 //!
 //! # Examples
+//! Add the following to `Cargo.toml`
+//!
+//! ```toml
+//! fn_meta = "0.1.0"
+//! ```
+//!
+//! Code:
 //!
 //! ```rust
-//! # extern crate alloc;
-//! #
 //! # use core::any::TypeId;
 //! #
 //! use fn_meta::FnMetadataExt;
