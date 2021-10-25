@@ -120,16 +120,16 @@ where
 
 fn mut_ref_arg_ids<const N: usize>(arg_refs: [Ref; N]) -> String {
     let mut mut_ref_arg_ids = String::with_capacity(N * 20);
-    let mut arg_refs_imm_iter = arg_refs
+    let mut arg_refs_mut_iter = arg_refs
         .iter()
         .copied()
         .enumerate()
         .filter(|(_, arg_ref)| *arg_ref == Ref::Mutable);
-    if let Some((index, _)) = arg_refs_imm_iter.next() {
+    if let Some((index, _)) = arg_refs_mut_iter.next() {
         write!(&mut mut_ref_arg_ids, "TypeId::of::<A{}>()", index)
             .expect("Failed to append to `mut_ref_arg_ids` string.")
     }
-    arg_refs_imm_iter
+    arg_refs_mut_iter
         .try_for_each(|(index, _)| write!(&mut mut_ref_arg_ids, ", TypeId::of::<A{}>()", index))
         .expect("Failed to append to `mut_ref_arg_ids` string.");
     mut_ref_arg_ids
