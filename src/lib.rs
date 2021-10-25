@@ -6,7 +6,7 @@
 //! Add the following to `Cargo.toml`
 //!
 //! ```toml
-//! fn_meta = "0.1.0"
+//! fn_meta = "0.2.0"
 //! ```
 //!
 //! Code:
