@@ -22,9 +22,9 @@
 //!
 //! assert_eq!(
 //!     [TypeId::of::<S0>(), TypeId::of::<S2>()],
-//!     fn_metadata.reads()
+//!     fn_metadata.borrows()
 //! );
-//! assert_eq!([TypeId::of::<S1>()], fn_metadata.writes());
+//! assert_eq!([TypeId::of::<S1>()], fn_metadata.borrow_muts());
 //! #
 //! # struct S0;
 //! # struct S1;
@@ -45,15 +45,15 @@ mod tests {
     #[test]
     fn read_1_write_1() {
         let fn_metadata = f_r1_w1.into_fn_metadata();
-        assert_eq!([TypeId::of::<S0>()], fn_metadata.reads());
-        assert_eq!([TypeId::of::<S1>()], fn_metadata.writes());
+        assert_eq!([TypeId::of::<S0>()], fn_metadata.borrows());
+        assert_eq!([TypeId::of::<S1>()], fn_metadata.borrow_muts());
     }
 
     #[test]
     fn write_1_read_1() {
         let fn_metadata = f_w1_r1.into_fn_metadata();
-        assert_eq!([TypeId::of::<S1>()], fn_metadata.reads());
-        assert_eq!([TypeId::of::<S0>()], fn_metadata.writes());
+        assert_eq!([TypeId::of::<S1>()], fn_metadata.borrows());
+        assert_eq!([TypeId::of::<S0>()], fn_metadata.borrow_muts());
     }
 
     #[test]
@@ -61,18 +61,18 @@ mod tests {
         let fn_metadata = f_r1_w1_r1.into_fn_metadata();
         assert_eq!(
             [TypeId::of::<S0>(), TypeId::of::<S2>()],
-            fn_metadata.reads()
+            fn_metadata.borrows()
         );
-        assert_eq!([TypeId::of::<S1>()], fn_metadata.writes());
+        assert_eq!([TypeId::of::<S1>()], fn_metadata.borrow_muts());
     }
 
     #[test]
     fn write_1_read_1_write_1() {
         let fn_metadata = f_w1_r1_w1.into_fn_metadata();
-        assert_eq!([TypeId::of::<S1>()], fn_metadata.reads());
+        assert_eq!([TypeId::of::<S1>()], fn_metadata.borrows());
         assert_eq!(
             [TypeId::of::<S0>(), TypeId::of::<S2>()],
-            fn_metadata.writes()
+            fn_metadata.borrow_muts()
         );
     }
 
@@ -81,7 +81,7 @@ mod tests {
         let fn_metadata = f_w2_r2_w2_r1.into_fn_metadata();
         assert_eq!(
             [TypeId::of::<S2>(), TypeId::of::<S3>(), TypeId::of::<S6>()],
-            fn_metadata.reads()
+            fn_metadata.borrows()
         );
         assert_eq!(
             [
@@ -90,14 +90,14 @@ mod tests {
                 TypeId::of::<S4>(),
                 TypeId::of::<S5>()
             ],
-            fn_metadata.writes()
+            fn_metadata.borrow_muts()
         );
     }
 
     #[test]
     fn read_1() {
         let fn_metadata = f_r1.into_fn_metadata();
-        assert_eq!([TypeId::of::<S0>()], fn_metadata.reads());
+        assert_eq!([TypeId::of::<S0>()], fn_metadata.borrows());
     }
 
     #[test]
@@ -105,7 +105,7 @@ mod tests {
         let fn_metadata = f_r2.into_fn_metadata();
         assert_eq!(
             [TypeId::of::<S0>(), TypeId::of::<S1>()],
-            fn_metadata.reads()
+            fn_metadata.borrows()
         );
     }
 
@@ -114,7 +114,7 @@ mod tests {
         let fn_metadata = f_r3.into_fn_metadata();
         assert_eq!(
             [TypeId::of::<S0>(), TypeId::of::<S1>(), TypeId::of::<S2>(),],
-            fn_metadata.reads()
+            fn_metadata.borrows()
         );
     }
 
@@ -128,7 +128,7 @@ mod tests {
                 TypeId::of::<S2>(),
                 TypeId::of::<S3>(),
             ],
-            fn_metadata.reads()
+            fn_metadata.borrows()
         );
     }
 
@@ -143,7 +143,7 @@ mod tests {
                 TypeId::of::<S3>(),
                 TypeId::of::<S4>(),
             ],
-            fn_metadata.reads()
+            fn_metadata.borrows()
         );
     }
 
@@ -159,14 +159,14 @@ mod tests {
                 TypeId::of::<S4>(),
                 TypeId::of::<S5>()
             ],
-            fn_metadata.reads()
+            fn_metadata.borrows()
         );
     }
 
     #[test]
     fn write_1() {
         let fn_metadata = f_w1.into_fn_metadata();
-        assert_eq!([TypeId::of::<S0>()], fn_metadata.writes());
+        assert_eq!([TypeId::of::<S0>()], fn_metadata.borrow_muts());
     }
 
     #[test]
@@ -174,7 +174,7 @@ mod tests {
         let fn_metadata = f_w2.into_fn_metadata();
         assert_eq!(
             [TypeId::of::<S0>(), TypeId::of::<S1>()],
-            fn_metadata.writes()
+            fn_metadata.borrow_muts()
         );
     }
 
@@ -183,7 +183,7 @@ mod tests {
         let fn_metadata = f_w3.into_fn_metadata();
         assert_eq!(
             [TypeId::of::<S0>(), TypeId::of::<S1>(), TypeId::of::<S2>(),],
-            fn_metadata.writes()
+            fn_metadata.borrow_muts()
         );
     }
 
@@ -197,7 +197,7 @@ mod tests {
                 TypeId::of::<S2>(),
                 TypeId::of::<S3>(),
             ],
-            fn_metadata.writes()
+            fn_metadata.borrow_muts()
         );
     }
 
@@ -212,7 +212,7 @@ mod tests {
                 TypeId::of::<S3>(),
                 TypeId::of::<S4>(),
             ],
-            fn_metadata.writes()
+            fn_metadata.borrow_muts()
         );
     }
 
@@ -228,7 +228,7 @@ mod tests {
                 TypeId::of::<S4>(),
                 TypeId::of::<S5>()
             ],
-            fn_metadata.writes()
+            fn_metadata.borrow_muts()
         );
     }
 

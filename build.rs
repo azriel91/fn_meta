@@ -94,11 +94,11 @@ where
     Fun: FnOnce({arg_refs_csv}) -> Ret,
 {arg_bounds_list}
 {{
-    pub fn reads(&self) -> [TypeId; {imm_refs_count}] {{
+    pub fn borrows(&self) -> [TypeId; {imm_refs_count}] {{
         [{imm_ref_arg_ids}]
     }}
 
-    pub fn writes(&self) -> [TypeId; {mut_refs_count}] {{
+    pub fn borrow_muts(&self) -> [TypeId; {mut_refs_count}] {{
         [{mut_ref_arg_ids}]
     }}
 }}
