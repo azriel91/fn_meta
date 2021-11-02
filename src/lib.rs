@@ -14,11 +14,11 @@
 //! ```rust
 //! # use core::any::TypeId;
 //! #
-//! use fn_meta::FnMetadataExt;
+//! use fn_meta::IntoFnMetadata;
 //!
 //! fn my_function(_: &S0, _: &mut S1, _: &S2) -> () {}
 //!
-//! let fn_metadata = my_function.meta();
+//! let fn_metadata = my_function.into_fn_metadata();
 //!
 //! assert_eq!(
 //!     [TypeId::of::<S0>(), TypeId::of::<S2>()],
@@ -31,34 +31,34 @@
 //! # struct S2;
 //! ```
 
-pub use crate::{fn_metadata::FnMetadata, fn_metadata_ext::FnMetadataExt};
+pub use crate::{fn_metadata::FnMetadata, into_fn_metadata::IntoFnMetadata};
 
 mod fn_metadata;
-mod fn_metadata_ext;
+mod into_fn_metadata;
 
 #[cfg(test)]
 mod tests {
     use core::any::TypeId;
 
-    use super::FnMetadataExt;
+    use super::IntoFnMetadata;
 
     #[test]
     fn read_1_write_1() {
-        let fn_metadata = f_r1_w1.meta();
+        let fn_metadata = f_r1_w1.into_fn_metadata();
         assert_eq!([TypeId::of::<S0>()], fn_metadata.reads());
         assert_eq!([TypeId::of::<S1>()], fn_metadata.writes());
     }
 
     #[test]
     fn write_1_read_1() {
-        let fn_metadata = f_w1_r1.meta();
+        let fn_metadata = f_w1_r1.into_fn_metadata();
         assert_eq!([TypeId::of::<S1>()], fn_metadata.reads());
         assert_eq!([TypeId::of::<S0>()], fn_metadata.writes());
     }
 
     #[test]
     fn read_1_write_1_read_1() {
-        let fn_metadata = f_r1_w1_r1.meta();
+        let fn_metadata = f_r1_w1_r1.into_fn_metadata();
         assert_eq!(
             [TypeId::of::<S0>(), TypeId::of::<S2>()],
             fn_metadata.reads()
@@ -68,7 +68,7 @@ mod tests {
 
     #[test]
     fn write_1_read_1_write_1() {
-        let fn_metadata = f_w1_r1_w1.meta();
+        let fn_metadata = f_w1_r1_w1.into_fn_metadata();
         assert_eq!([TypeId::of::<S1>()], fn_metadata.reads());
         assert_eq!(
             [TypeId::of::<S0>(), TypeId::of::<S2>()],
@@ -78,7 +78,7 @@ mod tests {
 
     #[test]
     fn write_2_read_2_write_2_read_1() {
-        let fn_metadata = f_w2_r2_w2_r1.meta();
+        let fn_metadata = f_w2_r2_w2_r1.into_fn_metadata();
         assert_eq!(
             [TypeId::of::<S2>(), TypeId::of::<S3>(), TypeId::of::<S6>()],
             fn_metadata.reads()
@@ -96,13 +96,13 @@ mod tests {
 
     #[test]
     fn read_1() {
-        let fn_metadata = f_r1.meta();
+        let fn_metadata = f_r1.into_fn_metadata();
         assert_eq!([TypeId::of::<S0>()], fn_metadata.reads());
     }
 
     #[test]
     fn read_2() {
-        let fn_metadata = f_r2.meta();
+        let fn_metadata = f_r2.into_fn_metadata();
         assert_eq!(
             [TypeId::of::<S0>(), TypeId::of::<S1>()],
             fn_metadata.reads()
@@ -111,7 +111,7 @@ mod tests {
 
     #[test]
     fn read_3() {
-        let fn_metadata = f_r3.meta();
+        let fn_metadata = f_r3.into_fn_metadata();
         assert_eq!(
             [TypeId::of::<S0>(), TypeId::of::<S1>(), TypeId::of::<S2>(),],
             fn_metadata.reads()
@@ -120,7 +120,7 @@ mod tests {
 
     #[test]
     fn read_4() {
-        let fn_metadata = f_r4.meta();
+        let fn_metadata = f_r4.into_fn_metadata();
         assert_eq!(
             [
                 TypeId::of::<S0>(),
@@ -134,7 +134,7 @@ mod tests {
 
     #[test]
     fn read_5() {
-        let fn_metadata = f_r5.meta();
+        let fn_metadata = f_r5.into_fn_metadata();
         assert_eq!(
             [
                 TypeId::of::<S0>(),
@@ -149,7 +149,7 @@ mod tests {
 
     #[test]
     fn read_6() {
-        let fn_metadata = f_r6.meta();
+        let fn_metadata = f_r6.into_fn_metadata();
         assert_eq!(
             [
                 TypeId::of::<S0>(),
@@ -165,13 +165,13 @@ mod tests {
 
     #[test]
     fn write_1() {
-        let fn_metadata = f_w1.meta();
+        let fn_metadata = f_w1.into_fn_metadata();
         assert_eq!([TypeId::of::<S0>()], fn_metadata.writes());
     }
 
     #[test]
     fn write_2() {
-        let fn_metadata = f_w2.meta();
+        let fn_metadata = f_w2.into_fn_metadata();
         assert_eq!(
             [TypeId::of::<S0>(), TypeId::of::<S1>()],
             fn_metadata.writes()
@@ -180,7 +180,7 @@ mod tests {
 
     #[test]
     fn write_3() {
-        let fn_metadata = f_w3.meta();
+        let fn_metadata = f_w3.into_fn_metadata();
         assert_eq!(
             [TypeId::of::<S0>(), TypeId::of::<S1>(), TypeId::of::<S2>(),],
             fn_metadata.writes()
@@ -189,7 +189,7 @@ mod tests {
 
     #[test]
     fn write_4() {
-        let fn_metadata = f_w4.meta();
+        let fn_metadata = f_w4.into_fn_metadata();
         assert_eq!(
             [
                 TypeId::of::<S0>(),
@@ -203,7 +203,7 @@ mod tests {
 
     #[test]
     fn write_5() {
-        let fn_metadata = f_w5.meta();
+        let fn_metadata = f_w5.into_fn_metadata();
         assert_eq!(
             [
                 TypeId::of::<S0>(),
@@ -218,7 +218,7 @@ mod tests {
 
     #[test]
     fn write_6() {
-        let fn_metadata = f_w6.meta();
+        let fn_metadata = f_w6.into_fn_metadata();
         assert_eq!(
             [
                 TypeId::of::<S0>(),
