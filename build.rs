@@ -1,34 +1,44 @@
+#![cfg(not(tarpaulin_include))]
+
 use std::{env, fmt::Write as _, fs::OpenOptions, io::Write, mem::MaybeUninit, path::Path};
 
 fn main() {
     let out_dir = env::var_os("OUT_DIR").expect("Failed to read `OUT_DIR` environment variable.");
-    let lib_impl_path = Path::new(&out_dir).join("lib_impl.rs");
-    let mut lib_impl = OpenOptions::new()
-        .create(true)
-        .write(true)
-        .open(lib_impl_path)
-        .expect("Failed to open `lib_impl.rs`.");
+    let out_dir = Path::new(&out_dir);
 
-    write!(lib_impl, "{}", generate_impls_for_n_args::<1>())
-        .expect("Failed to write to lib_impl.rs");
-    write!(lib_impl, "{}", generate_impls_for_n_args::<2>())
-        .expect("Failed to write to lib_impl.rs");
-    write!(lib_impl, "{}", generate_impls_for_n_args::<3>())
-        .expect("Failed to write to lib_impl.rs");
-    write!(lib_impl, "{}", generate_impls_for_n_args::<4>())
-        .expect("Failed to write to lib_impl.rs");
-    write!(lib_impl, "{}", generate_impls_for_n_args::<5>())
-        .expect("Failed to write to lib_impl.rs");
-    write!(lib_impl, "{}", generate_impls_for_n_args::<6>())
-        .expect("Failed to write to lib_impl.rs");
-    write!(lib_impl, "{}", generate_impls_for_n_args::<7>())
-        .expect("Failed to write to lib_impl.rs");
-
-    lib_impl
-        .flush()
-        .expect("Failed to flush writer for lib_impl.rs");
+    fn_metadata_impl(out_dir);
 
     println!("cargo:rerun-if-changed=build.rs");
+}
+
+fn fn_metadata_impl(out_dir: &Path) {
+    let fn_metadata_impl_path = out_dir.join("fn_metadata_impl.rs");
+    let mut fn_metadata_impl = OpenOptions::new()
+        .create(true)
+        .write(true)
+        .open(fn_metadata_impl_path)
+        .expect("Failed to open `fn_metadata_impl.rs`.");
+
+    write!(fn_metadata_impl, "{}", generate_impls_for_n_args::<1>())
+        .expect("Failed to write to fn_metadata_impl.rs");
+    write!(fn_metadata_impl, "{}", generate_impls_for_n_args::<2>())
+        .expect("Failed to write to fn_metadata_impl.rs");
+    write!(fn_metadata_impl, "{}", generate_impls_for_n_args::<3>())
+        .expect("Failed to write to fn_metadata_impl.rs");
+    write!(fn_metadata_impl, "{}", generate_impls_for_n_args::<4>())
+        .expect("Failed to write to fn_metadata_impl.rs");
+    write!(fn_metadata_impl, "{}", generate_impls_for_n_args::<5>())
+        .expect("Failed to write to fn_metadata_impl.rs");
+    write!(fn_metadata_impl, "{}", generate_impls_for_n_args::<6>())
+        .expect("Failed to write to fn_metadata_impl.rs");
+    write!(fn_metadata_impl, "{}", generate_impls_for_n_args::<7>())
+        .expect("Failed to write to fn_metadata_impl.rs");
+    write!(fn_metadata_impl, "{}", generate_impls_for_n_args::<8>())
+        .expect("Failed to write to fn_metadata_impl.rs");
+
+    fn_metadata_impl
+        .flush()
+        .expect("Failed to flush writer for fn_metadata_impl.rs");
 }
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
@@ -44,8 +54,13 @@ fn generate_impls_for_n_args<const N: usize>() -> String {
     // "    A0: 'static,\n    A1: 'static,"
     let arg_bounds_list = arg_bounds_list::<N>();
 
+    #[cfg(feature = "fn_meta")]
+    let fn_meta_impl_buffer_len = 420 + N * 32;
+    #[cfg(not(feature = "fn_meta"))]
+    let fn_meta_impl_buffer_len = 0;
+
     arg_refs_combinations::<N>().fold(
-        String::with_capacity(N * (256 + N * 64)),
+        String::with_capacity(N * (256 + N * 64 + fn_meta_impl_buffer_len)),
         |mut impls_buffer, arg_refs| {
             let mut arg_refs_iter = arg_refs.iter().copied().enumerate();
 
@@ -102,7 +117,7 @@ where
         [{mut_ref_arg_ids}]
     }}
 }}
-    "#,
+"#,
                 args_csv = args_csv,
                 arg_refs_csv = arg_refs_csv,
                 arg_bounds_list = arg_bounds_list,
@@ -110,6 +125,34 @@ where
                 imm_ref_arg_ids = imm_ref_arg_ids,
                 mut_refs_count = mut_refs_count,
                 mut_ref_arg_ids = mut_ref_arg_ids,
+            )
+            .expect("Failed to append to impls_buffer.");
+
+            #[cfg(feature = "fn_meta")]
+            write!(
+                impls_buffer,
+                r#"
+impl<Fun, Ret, {args_csv}> crate::FnMeta for FnMetadata<Fun, Ret, ({arg_refs_csv})>
+where
+    Fun: FnOnce({arg_refs_csv}) -> Ret,
+{arg_bounds_list}
+{{
+    fn borrows(&self) -> crate::TypeIds {{
+        let mut type_ids = crate::TypeIds::new();
+        type_ids.extend(self.borrows());
+        type_ids
+    }}
+
+    fn borrow_muts(&self) -> crate::TypeIds {{
+        let mut type_ids = crate::TypeIds::new();
+        type_ids.extend(self.borrow_muts());
+        type_ids
+    }}
+}}
+"#,
+                args_csv = args_csv,
+                arg_refs_csv = arg_refs_csv,
+                arg_bounds_list = arg_bounds_list,
             )
             .expect("Failed to append to impls_buffer.");
 

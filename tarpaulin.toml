@@ -1,5 +1,7 @@
 [default]
-exclude-files = ["lib_impl.rs"]
+
+[fn_meta]
+features = "fn_meta"
 
 [report]
 out = ["Html", "Xml"]

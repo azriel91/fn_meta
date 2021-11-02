@@ -9,3 +9,10 @@ documentation = "https://docs.rs/fn_meta/"
 readme = "README.md"
 keywords = ["function", "meta", "metadata", "no_std"]
 license = "MIT OR Apache-2.0"
+
+[dependencies]
+arrayvec = { version = "0.7.2", optional = true }
+
+[features]
+default = []
+fn_meta = ["arrayvec"]
