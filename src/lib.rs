@@ -14,11 +14,11 @@
 //! ```rust
 //! # use core::any::TypeId;
 //! #
-//! use fn_meta::IntoFnMetadata;
+//! use fn_meta::FnMetadataExt;
 //!
 //! fn my_function(_: &S0, _: &mut S1, _: &S2) -> () {}
 //!
-//! let fn_metadata = my_function.into_fn_metadata();
+//! let fn_metadata = my_function.fn_metadata();
 //!
 //! assert_eq!(
 //!     [TypeId::of::<S0>(), TypeId::of::<S2>()],
@@ -31,17 +31,17 @@
 //! # struct S2;
 //! ```
 
-pub use crate::{fn_metadata::FnMetadata, into_fn_metadata::IntoFnMetadata};
+pub use crate::{fn_metadata::FnMetadata, fn_metadata_ext::FnMetadataExt};
 
 mod fn_metadata;
-mod into_fn_metadata;
+mod fn_metadata_ext;
 
 #[cfg(feature = "fn_meta")]
-pub use crate::{fn_meta::FnMeta, into_fn_meta::IntoFnMeta, type_ids::TypeIds};
+pub use crate::{fn_meta::FnMeta, fn_meta_ext::FnMetaExt, type_ids::TypeIds};
 
 #[cfg(feature = "fn_meta")]
 mod fn_meta;
 #[cfg(feature = "fn_meta")]
-mod into_fn_meta;
+mod fn_meta_ext;
 #[cfg(feature = "fn_meta")]
 mod type_ids;
