@@ -54,7 +54,7 @@ fn generate_impls_for_n_args<const N: usize>() -> String {
     // "    A0: 'static,\n    A1: 'static,"
     let arg_bounds_list = arg_bounds_list::<N>();
 
-    #[cfg(feature = "fn_meta")]
+    #[cfg(feature = "fn_meta_ext")]
     let fn_meta_impl_buffer_len = 420 + N * 32;
     #[cfg(not(feature = "fn_meta"))]
     let fn_meta_impl_buffer_len = 0;
@@ -128,7 +128,7 @@ where
             )
             .expect("Failed to append to impls_buffer.");
 
-            #[cfg(feature = "fn_meta")]
+            #[cfg(feature = "fn_meta_ext")]
             write!(
                 impls_buffer,
                 r#"

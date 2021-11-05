@@ -15,4 +15,4 @@ arrayvec = { version = "0.7.2", optional = true }
 
 [features]
 default = []
-fn_meta = ["arrayvec"]
+fn_meta_ext = ["arrayvec"]
