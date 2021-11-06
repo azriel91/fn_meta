@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.3.0 (unreleased)
+## 0.3.0 (2021-11-06)
 
 * Rename `FnMetadata::reads` to `FnMetadata::borrows`.
 * Rename `FnMetadata::writes` to `FnMetadata::borrow_muts`.
