@@ -1,7 +1,7 @@
 [default]
 
 [fn_meta]
-features = "fn_meta"
+features = "fn_meta_ext"
 
 [report]
 out = ["Html", "Xml"]
