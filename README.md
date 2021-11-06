@@ -50,6 +50,12 @@ struct S2;
 
 Enables the `FnMeta` and `FnMetaExt` traits. `FnMetaExt` adds the `.meta()` function on functions and closures to return a `Box<dyn FnMeta>`, which is the dynamic dispatch analog to `FnMetadata`.
 
+#### `"high_arg_count"`:
+
+Raises the number of arguments that [`FnMetaExt`] and [`FnMetadataExt`] are implemented for from 6 to 8.
+
+This is feature gated because compilation time increasing significantly with higher numbers of arguments -- as much as from 1.5 seconds for 6 arguments to 8 seconds for 8 arguments.
+
 
 ## License
 

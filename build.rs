@@ -31,8 +31,10 @@ fn fn_metadata_impl(out_dir: &Path) {
         .expect("Failed to write to fn_metadata_impl.rs");
     write!(fn_metadata_impl, "{}", generate_impls_for_n_args::<6>())
         .expect("Failed to write to fn_metadata_impl.rs");
+    #[cfg(feature = "high_arg_count")]
     write!(fn_metadata_impl, "{}", generate_impls_for_n_args::<7>())
         .expect("Failed to write to fn_metadata_impl.rs");
+    #[cfg(feature = "high_arg_count")]
     write!(fn_metadata_impl, "{}", generate_impls_for_n_args::<8>())
         .expect("Failed to write to fn_metadata_impl.rs");
 

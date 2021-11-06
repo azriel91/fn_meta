@@ -65,6 +65,7 @@ mod tests {
         );
     }
 
+    #[cfg(feature = "high_arg_count")]
     #[test]
     fn write_2_read_2_write_2_read_1() {
         let fn_metadata = f_w2_r2_w2_r1.metadata();
@@ -83,6 +84,7 @@ mod tests {
         );
     }
 
+    #[cfg(feature = "high_arg_count")]
     #[test]
     fn write_2_read_2_write_2_read_2() {
         let fn_metadata =
@@ -280,6 +282,7 @@ mod tests {
     fn f_r1_w1_r1(_: &S0, _: &mut S1, _: &S2) -> () {}
     #[cfg(not(tarpaulin_include))]
     fn f_w1_r1_w1(_: &mut S0, _: &S1, _: &mut S2) -> () {}
+    #[cfg(feature = "high_arg_count")]
     #[cfg(not(tarpaulin_include))]
     fn f_w2_r2_w2_r1(_: &mut S0, _: &mut S1, _: &S2, _: &S3, _: &mut S4, _: &mut S5, _: &S6) -> () {
     }
@@ -290,6 +293,8 @@ mod tests {
     struct S3;
     struct S4;
     struct S5;
+    #[cfg(feature = "high_arg_count")]
     struct S6;
+    #[cfg(feature = "high_arg_count")]
     struct S7;
 }

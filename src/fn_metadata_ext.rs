@@ -70,6 +70,7 @@ where
     }
 }
 
+#[cfg(feature = "high_arg_count")]
 impl<Fun, Ret, A, B, C, D, E, F, G> FnMetadataExt<Fun, Ret, (A, B, C, D, E, F, G)> for Fun
 where
     Fun: FnOnce(A, B, C, D, E, F, G) -> Ret,
@@ -80,6 +81,7 @@ where
     }
 }
 
+#[cfg(feature = "high_arg_count")]
 impl<Fun, Ret, A, B, C, D, E, F, G, H> FnMetadataExt<Fun, Ret, (A, B, C, D, E, F, G, H)> for Fun
 where
     Fun: FnOnce(A, B, C, D, E, F, G, H) -> Ret,
