@@ -3,12 +3,15 @@ name = "fn_meta"
 version = "0.2.0"
 authors = ["Azriel Hoh <azriel91@gmail.com>"]
 edition = "2021"
-description = "Returns metadata about a function."
+description = "Returns metadata about a function at runtime."
 repository = "https://github.com/azriel91/fn_meta"
 documentation = "https://docs.rs/fn_meta/"
 readme = "README.md"
 keywords = ["function", "meta", "metadata", "no_std"]
 license = "MIT OR Apache-2.0"
+
+[package.metadata.docs.rs]
+features = ["fn_meta_ext"]
 
 [dependencies]
 arrayvec = { version = "0.7.2", optional = true }

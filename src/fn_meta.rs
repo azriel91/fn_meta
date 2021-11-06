@@ -8,8 +8,12 @@ use crate::{FnMetadata, TypeIds};
 /// Any type that tracks metadata about a function.
 pub trait FnMeta {
     /// Returns the [`TypeId`]s of borrowed arguments.
+    ///
+    /// [`TypeId`]: core::any::TypeId
     fn borrows(&self) -> TypeIds;
     /// Returns the [`TypeId`]s of mutably borrowed arguments.
+    ///
+    /// [`TypeId`]: core::any::TypeId
     fn borrow_muts(&self) -> TypeIds;
 }
 

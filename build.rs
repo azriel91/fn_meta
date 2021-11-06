@@ -56,7 +56,7 @@ fn generate_impls_for_n_args<const N: usize>() -> String {
 
     #[cfg(feature = "fn_meta_ext")]
     let fn_meta_impl_buffer_len = 420 + N * 32;
-    #[cfg(not(feature = "fn_meta"))]
+    #[cfg(not(feature = "fn_meta_ext"))]
     let fn_meta_impl_buffer_len = 0;
 
     arg_refs_combinations::<N>().fold(

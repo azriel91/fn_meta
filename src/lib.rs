@@ -1,24 +1,33 @@
 #![no_std]
 
-//! Returns metadata about a function.
+//! Returns metadata about a function at runtime.
 //!
-//! # Examples
+//! Currently this includes the [`TypeId`]s of function parameters.
+//!
+//! This includes a [`FnMetadata`] struct and [`FnMetadataExt`] trait.
+//! `FnMetadataExt` adds the `.metadata()` function on functions and closures to
+//! return a `FnMetadata`, whose implementation returns function metadata at
+//! runtime.
+//!
+//! ## Usage
+//!
 //! Add the following to `Cargo.toml`
 //!
 //! ```toml
 //! fn_meta = "0.2.0"
+//!
+//! # or
+//! fn_meta = { version = "0.2.0", features = ["fn_meta_ext"] }
 //! ```
 //!
 //! Code:
 //!
 //! ```rust
-//! # use core::any::TypeId;
-//! #
 //! use fn_meta::FnMetadataExt;
 //!
-//! fn my_function(_: &S0, _: &mut S1, _: &S2) -> () {}
+//! fn f1(_: &S0, _: &mut S1, _: &S2) -> () {}
 //!
-//! let fn_metadata = my_function.fn_metadata();
+//! let fn_metadata = f1.metadata();
 //!
 //! assert_eq!(
 //!     [TypeId::of::<S0>(), TypeId::of::<S2>()],
@@ -30,6 +39,20 @@
 //! # struct S1;
 //! # struct S2;
 //! ```
+//!
+//! ### Features
+//!
+//! #### `"fn_meta_ext"`:
+//!
+//! Enables the [`FnMeta`] and [`FnMetaExt`] traits. `FnMetaExt` adds the
+//! `.meta()` function on functions and closures to return a `Box<dyn FnMeta>`,
+//! which is the dynamic dispatch analog to `FnMetadata`.
+//!
+//! [`TypeId`]: core::any::TypeId
+//! [`FnMetadata`]: crate::FnMetadata
+//! [`FnMetadataExt`]: crate::FnMetadataExt
+//! [`FnMeta`]: crate::FnMeta
+//! [`FnMetaExt`]: crate::FnMetaExt
 
 pub use crate::{fn_metadata::FnMetadata, fn_metadata_ext::FnMetadataExt};
 
