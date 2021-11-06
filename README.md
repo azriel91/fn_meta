@@ -25,6 +25,8 @@ fn_meta = { version = "0.3.0", features = ["fn_meta_ext"] }
 Code:
 
 ```rust
+use core::any::TypeId;
+
 use fn_meta::FnMetadataExt;
 
 fn f1(_: &S0, _: &mut S1, _: &S2) -> () {}

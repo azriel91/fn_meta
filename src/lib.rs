@@ -23,6 +23,8 @@
 //! Code:
 //!
 //! ```rust
+//! # use core::any::TypeId;
+//! #
 //! use fn_meta::FnMetadataExt;
 //!
 //! fn f1(_: &S0, _: &mut S1, _: &S2) -> () {}
