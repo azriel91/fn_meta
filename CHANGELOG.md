@@ -4,11 +4,12 @@
 
 * Rename `FnMetadata::reads` to `FnMetadata::borrows`.
 * Rename `FnMetadata::writes` to `FnMetadata::borrow_muts`.
-* Rename `FnMetadataExt` to `IntoFnMetadata`.
-* Add `IntoFnMeta`.
+* Add `FnMetaExt` trait.
 * Add `FnMeta` trait.
+* Rename `FnMetadataExt::meta` to `FnMetadataExt::metadata`.
 * Support 0 parameters.
 * Support up to 8 parameters.
+* Implement `FnMeta` for `Box<T>` where `T: FnMeta`.
 
 ## 0.2.0 (2021-10-25)
 
