@@ -16,10 +16,10 @@ This includes a [`FnMetadata`] struct and [`FnMetadataExt`] trait. `FnMetadataEx
 Add the following to `Cargo.toml`
 
 ```toml
-fn_meta = "0.3.0"
+fn_meta = "0.4.0"
 
 # or
-fn_meta = { version = "0.3.0", features = ["fn_meta_ext"] }
+fn_meta = { version = "0.4.0", features = ["fn_meta_ext"] }
 ```
 
 Code:
