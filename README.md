@@ -2,7 +2,7 @@
 
 [![Crates.io](https://img.shields.io/crates/v/fn_meta.svg)](https://crates.io/crates/fn_meta)
 [![docs.rs](https://img.shields.io/docsrs/fn_meta)](https://docs.rs/fn_meta)
-[![CI](https://github.com/azriel91/credent/workflows/CI/badge.svg)](https://github.com/azriel91/fn_meta/actions/workflows/ci.yml)
+[![CI](https://github.com/azriel91/fn_meta/workflows/CI/badge.svg)](https://github.com/azriel91/fn_meta/actions/workflows/ci.yml)
 [![Coverage Status](https://codecov.io/gh/azriel91/fn_meta/branch/main/graph/badge.svg)](https://codecov.io/gh/azriel91/fn_meta)
 
 Returns metadata about a function at runtime.
