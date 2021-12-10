@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.1 (2021-12-11)
+
+* Remove `FnOnce` constraint for `Fun`.
+* Rename `Args` type parameters to `ArgRefs`.
+* Implement `FnMeta` for `*mut T`.
+* Avoid stack overflow when borrows is empty.
+
 ## 0.4.0 (2021-11-07)
 
 * Feature gate 7 and 8 arguments behind `"high_arg_count"` feature.
