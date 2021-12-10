@@ -1,7 +1,7 @@
 use core::{any::TypeId, marker::PhantomData};
 
 /// Metadata about a function
-pub struct FnMetadata<Fun, Ret, Args>(pub(crate) PhantomData<(Fun, Ret, Args)>);
+pub struct FnMetadata<Fun, Ret, ArgRefs>(pub PhantomData<(Fun, Ret, ArgRefs)>);
 
 impl<Fun, Ret> FnMetadata<Fun, Ret, ()>
 where

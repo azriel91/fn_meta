@@ -3,8 +3,8 @@ use core::marker::PhantomData;
 use crate::FnMetadata;
 
 /// Extension to return [`FnMetadata`] for a function.
-pub trait FnMetadataExt<Fun, Ret, Args> {
-    fn metadata(&self) -> FnMetadata<Fun, Ret, Args>;
+pub trait FnMetadataExt<Fun, Ret, ArgRefs> {
+    fn metadata(&self) -> FnMetadata<Fun, Ret, ArgRefs>;
 }
 
 impl<Fun, Ret> FnMetadataExt<Fun, Ret, ()> for Fun

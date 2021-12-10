@@ -5,7 +5,7 @@ use alloc::boxed::Box;
 use crate::{FnMeta, FnMetadata, FnMetadataExt};
 
 /// Extension to return `Box<dyn FnMeta>` for a function.
-pub trait FnMetaExt<Fun, Ret, Args> {
+pub trait FnMetaExt<Fun, Ret, ArgRefs> {
     fn meta(&self) -> Box<dyn FnMeta>;
 }
 
