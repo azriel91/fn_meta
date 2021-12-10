@@ -40,6 +40,19 @@ where
     }
 }
 
+impl<T> FnMeta for *mut T
+where
+    T: FnMeta + ?Sized,
+{
+    fn borrows(&self) -> TypeIds {
+        unsafe { (&**self).borrows() }
+    }
+
+    fn borrow_muts(&self) -> TypeIds {
+        unsafe { (&**self).borrow_muts() }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use core::any::TypeId;
