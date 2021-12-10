@@ -108,7 +108,6 @@ fn generate_impls_for_n_args<const N: usize>() -> String {
                 r#"
 impl<Fun, Ret, {args_csv}> FnMetadata<Fun, Ret, ({arg_refs_csv})>
 where
-    Fun: FnOnce({arg_refs_csv}) -> Ret,
 {arg_bounds_list}
 {{
     pub fn borrows(&self) -> [TypeId; {imm_refs_count}] {{
@@ -136,7 +135,6 @@ where
                 r#"
 impl<Fun, Ret, {args_csv}> crate::FnMeta for FnMetadata<Fun, Ret, ({arg_refs_csv})>
 where
-    Fun: FnOnce({arg_refs_csv}) -> Ret,
 {arg_bounds_list}
 {{
     fn borrows(&self) -> crate::TypeIds {{
