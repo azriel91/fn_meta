@@ -17,20 +17,13 @@ pub trait FnMeta {
     fn borrow_muts(&self) -> TypeIds;
 }
 
-impl<Fun, Ret> FnMeta for FnMetadata<Fun, Ret, ()>
-where
-    Fun: FnOnce() -> Ret,
-{
+impl<Fun, Ret> FnMeta for FnMetadata<Fun, Ret, ()> {
     fn borrows(&self) -> TypeIds {
-        let mut type_ids = TypeIds::new();
-        type_ids.extend(self.borrows());
-        type_ids
+        TypeIds::new()
     }
 
     fn borrow_muts(&self) -> TypeIds {
-        let mut type_ids = TypeIds::new();
-        type_ids.extend(self.borrow_muts());
-        type_ids
+        TypeIds::new()
     }
 }
 
