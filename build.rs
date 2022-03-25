@@ -235,14 +235,9 @@ fn arg_refs_combinations<const N: usize>() -> impl Iterator<Item = [Ref; N]> {
         // N]>(arg_refs) };
 
         #[allow(clippy::let_and_return)] // for clarity with `unsafe`
-        let arg_refs = {
-            let ptr = &mut arg_refs as *mut _ as *mut [Ref; N];
-            let array = unsafe { ptr.read() };
-
-            // We don't have to `mem::forget` the original because `Ref` is `Copy`.
-            // mem::forget(arg_refs);
-
-            array
+        let arg_refs = unsafe {
+            (&*(&MaybeUninit::new(arg_refs) as *const _ as *const MaybeUninit<_>))
+                .assume_init_read()
         };
 
         arg_refs
