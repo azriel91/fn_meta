@@ -14,9 +14,9 @@ license = "MIT OR Apache-2.0"
 features = ["fn_meta_ext"]
 
 [dependencies]
-arrayvec = { version = "0.7.2", optional = true }
+smallvec = { version = "1.8.0", optional = true }
 
 [features]
 default = []
-fn_meta_ext = ["arrayvec"]
+fn_meta_ext = ["smallvec"]
 high_arg_count = []
