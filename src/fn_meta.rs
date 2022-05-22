@@ -1,12 +1,59 @@
 extern crate alloc;
 
 use alloc::boxed::Box;
-use core::ops::Deref;
 
 use crate::{FnMetadata, TypeIds};
 
 /// Any type that tracks metadata about a function.
 pub trait FnMeta {
+    /// Returns the [`TypeId`]s of borrowed arguments.
+    ///
+    /// [`TypeId`]: core::any::TypeId
+    fn borrows() -> TypeIds;
+    /// Returns the [`TypeId`]s of mutably borrowed arguments.
+    ///
+    /// [`TypeId`]: core::any::TypeId
+    fn borrow_muts() -> TypeIds;
+}
+
+impl<Fun, Ret> FnMeta for FnMetadata<Fun, Ret, ()> {
+    fn borrows() -> TypeIds {
+        TypeIds::new()
+    }
+
+    fn borrow_muts() -> TypeIds {
+        TypeIds::new()
+    }
+}
+
+impl<T> FnMeta for Box<T>
+where
+    T: FnMeta + ?Sized,
+{
+    fn borrows() -> TypeIds {
+        <T as FnMeta>::borrows()
+    }
+
+    fn borrow_muts() -> TypeIds {
+        <T as FnMeta>::borrow_muts()
+    }
+}
+
+impl<T> FnMeta for *mut T
+where
+    T: FnMeta + ?Sized,
+{
+    fn borrows() -> TypeIds {
+        <T as FnMeta>::borrows()
+    }
+
+    fn borrow_muts() -> TypeIds {
+        <T as FnMeta>::borrow_muts()
+    }
+}
+
+/// Any type that tracks metadata about a function.
+pub trait FnMetaDyn {
     /// Returns the [`TypeId`]s of borrowed arguments.
     ///
     /// [`TypeId`]: core::any::TypeId
@@ -17,39 +64,16 @@ pub trait FnMeta {
     fn borrow_muts(&self) -> TypeIds;
 }
 
-impl<Fun, Ret> FnMeta for FnMetadata<Fun, Ret, ()> {
-    fn borrows(&self) -> TypeIds {
-        TypeIds::new()
-    }
-
-    fn borrow_muts(&self) -> TypeIds {
-        TypeIds::new()
-    }
-}
-
-impl<T> FnMeta for Box<T>
+impl<T> FnMetaDyn for T
 where
-    T: FnMeta + ?Sized,
+    T: FnMeta,
 {
     fn borrows(&self) -> TypeIds {
-        self.deref().borrows()
+        <T as FnMeta>::borrows()
     }
 
     fn borrow_muts(&self) -> TypeIds {
-        self.deref().borrow_muts()
-    }
-}
-
-impl<T> FnMeta for *mut T
-where
-    T: FnMeta + ?Sized,
-{
-    fn borrows(&self) -> TypeIds {
-        unsafe { (&**self).borrows() }
-    }
-
-    fn borrow_muts(&self) -> TypeIds {
-        unsafe { (&**self).borrow_muts() }
+        <T as FnMeta>::borrow_muts()
     }
 }
 

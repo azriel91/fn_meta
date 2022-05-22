@@ -71,7 +71,11 @@ mod fn_metadata;
 mod fn_metadata_ext;
 
 #[cfg(feature = "fn_meta_ext")]
-pub use crate::{fn_meta::FnMeta, fn_meta_ext::FnMetaExt, type_ids::TypeIds};
+pub use crate::{
+    fn_meta::{FnMeta, FnMetaDyn},
+    fn_meta_ext::FnMetaExt,
+    type_ids::TypeIds,
+};
 
 #[cfg(feature = "fn_meta_ext")]
 mod fn_meta;

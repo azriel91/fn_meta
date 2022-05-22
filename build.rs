@@ -110,11 +110,11 @@ impl<Fun, Ret, {args_csv}> FnMetadata<Fun, Ret, ({arg_refs_csv})>
 where
 {arg_bounds_list}
 {{
-    pub fn borrows(&self) -> [TypeId; {imm_refs_count}] {{
+    pub fn borrows() -> [TypeId; {imm_refs_count}] {{
         [{imm_ref_arg_ids}]
     }}
 
-    pub fn borrow_muts(&self) -> [TypeId; {mut_refs_count}] {{
+    pub fn borrow_muts() -> [TypeId; {mut_refs_count}] {{
         [{mut_ref_arg_ids}]
     }}
 }}
@@ -137,15 +137,15 @@ impl<Fun, Ret, {args_csv}> crate::FnMeta for FnMetadata<Fun, Ret, ({arg_refs_csv
 where
 {arg_bounds_list}
 {{
-    fn borrows(&self) -> crate::TypeIds {{
+    fn borrows() -> crate::TypeIds {{
         let mut type_ids = crate::TypeIds::new();
-        type_ids.extend(self.borrows());
+        type_ids.extend(Self::borrows());
         type_ids
     }}
 
-    fn borrow_muts(&self) -> crate::TypeIds {{
+    fn borrow_muts() -> crate::TypeIds {{
         let mut type_ids = crate::TypeIds::new();
-        type_ids.extend(self.borrow_muts());
+        type_ids.extend(Self::borrow_muts());
         type_ids
     }}
 }}
