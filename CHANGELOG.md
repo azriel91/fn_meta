@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.0 (2022-05-23)
+
+* Remove `&self` from `FnMeta`.
+* Add `FnMetaDyn` trait.
+
 ## 0.5.0 (2022-05-22)
 
 * Use `smallvec::SmallVec` instead of `arrayvec::ArrayVec` to hold type IDs.
