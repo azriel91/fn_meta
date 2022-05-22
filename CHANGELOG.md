@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.0 (2022-05-22)
+
+* Use `smallvec::SmallVec` instead of `arrayvec::ArrayVec` to hold type IDs.
+
 ## 0.4.1 (2021-12-11)
 
 * Remove `FnOnce` constraint for `Fun`.
