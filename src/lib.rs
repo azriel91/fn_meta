@@ -25,7 +25,7 @@
 //! ```rust
 //! # use core::any::TypeId;
 //! #
-//! use fn_meta::FnMetadataExt;
+//! use fn_meta::{FnMetaDyn, FnMetadataExt};
 //!
 //! fn f1(_: &S0, _: &mut S1, _: &S2) -> () {}
 //!
@@ -33,9 +33,9 @@
 //!
 //! assert_eq!(
 //!     [TypeId::of::<S0>(), TypeId::of::<S2>()],
-//!     fn_metadata.borrows()
+//!     fn_metadata.borrows().as_slice()
 //! );
-//! assert_eq!([TypeId::of::<S1>()], fn_metadata.borrow_muts());
+//! assert_eq!([TypeId::of::<S1>()], fn_metadata.borrow_muts().as_slice());
 //! #
 //! # struct S0;
 //! # struct S1;
