@@ -9,26 +9,36 @@ pub trait FnMeta {
     /// Returns the [`TypeId`]s of borrowed arguments.
     ///
     /// [`TypeId`]: core::any::TypeId
-    fn borrows() -> TypeIds;
+    fn borrows() -> TypeIds
+    where
+        Self: Sized;
     /// Returns the [`TypeId`]s of mutably borrowed arguments.
     ///
     /// [`TypeId`]: core::any::TypeId
-    fn borrow_muts() -> TypeIds;
+    fn borrow_muts() -> TypeIds
+    where
+        Self: Sized;
 }
 
 impl<Fun, Ret> FnMeta for FnMetadata<Fun, Ret, ()> {
-    fn borrows() -> TypeIds {
+    fn borrows() -> TypeIds
+    where
+        Self: Sized,
+    {
         TypeIds::new()
     }
 
-    fn borrow_muts() -> TypeIds {
+    fn borrow_muts() -> TypeIds
+    where
+        Self: Sized,
+    {
         TypeIds::new()
     }
 }
 
 impl<T> FnMeta for Box<T>
 where
-    T: FnMeta + ?Sized,
+    T: FnMeta,
 {
     fn borrows() -> TypeIds {
         <T as FnMeta>::borrows()
@@ -41,7 +51,7 @@ where
 
 impl<T> FnMeta for *mut T
 where
-    T: FnMeta + ?Sized,
+    T: FnMeta,
 {
     fn borrows() -> TypeIds {
         <T as FnMeta>::borrows()
@@ -64,16 +74,39 @@ pub trait FnMetaDyn {
     fn borrow_muts(&self) -> TypeIds;
 }
 
-impl<T> FnMetaDyn for T
-where
-    T: FnMeta,
-{
+impl<Fun, Ret> FnMetaDyn for FnMetadata<Fun, Ret, ()> {
     fn borrows(&self) -> TypeIds {
-        <T as FnMeta>::borrows()
+        TypeIds::new()
     }
 
     fn borrow_muts(&self) -> TypeIds {
-        <T as FnMeta>::borrow_muts()
+        TypeIds::new()
+    }
+}
+
+impl<T> FnMetaDyn for Box<T>
+where
+    T: FnMetaDyn + ?Sized,
+{
+    fn borrows(&self) -> TypeIds {
+        <T as FnMetaDyn>::borrows(self)
+    }
+
+    fn borrow_muts(&self) -> TypeIds {
+        <T as FnMetaDyn>::borrow_muts(self)
+    }
+}
+
+impl<T> FnMetaDyn for *mut T
+where
+    T: FnMetaDyn + ?Sized,
+{
+    fn borrows(&self) -> TypeIds {
+        unsafe { (&**self).borrows() }
+    }
+
+    fn borrow_muts(&self) -> TypeIds {
+        unsafe { (&**self).borrow_muts() }
     }
 }
 

@@ -149,6 +149,23 @@ where
         type_ids
     }}
 }}
+
+impl<Fun, Ret, {args_csv}> crate::FnMetaDyn for FnMetadata<Fun, Ret, ({arg_refs_csv})>
+where
+{arg_bounds_list}
+{{
+    fn borrows(&self) -> crate::TypeIds {{
+        let mut type_ids = crate::TypeIds::new();
+        type_ids.extend(Self::borrows());
+        type_ids
+    }}
+
+    fn borrow_muts(&self) -> crate::TypeIds {{
+        let mut type_ids = crate::TypeIds::new();
+        type_ids.extend(Self::borrow_muts());
+        type_ids
+    }}
+}}
 "#,
                 args_csv = args_csv,
                 arg_refs_csv = arg_refs_csv,
