@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.1 (2022-07-05)
+
+* Update `smallvec` from `1.8.0` to `1.9.0`.
+
 ## 0.7.0 (2022-05-26)
 
 * Make `FnMeta` methods non-dispatchable.
