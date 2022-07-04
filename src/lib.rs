@@ -14,10 +14,10 @@
 //! Add the following to `Cargo.toml`
 //!
 //! ```toml
-//! fn_meta = "0.7.0"
+//! fn_meta = "0.7.1"
 //!
 //! # or
-//! fn_meta = { version = "0.7.0", features = ["fn_meta_ext"] }
+//! fn_meta = { version = "0.7.1", features = ["fn_meta_ext"] }
 //! ```
 //!
 //! Code:
