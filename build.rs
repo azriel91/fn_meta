@@ -253,8 +253,7 @@ fn arg_refs_combinations<const N: usize>() -> impl Iterator<Item = [Ref; N]> {
 
         #[allow(clippy::let_and_return)] // for clarity with `unsafe`
         let arg_refs = unsafe {
-            (&*(&MaybeUninit::new(arg_refs) as *const _ as *const MaybeUninit<_>))
-                .assume_init_read()
+            (*(&MaybeUninit::new(arg_refs) as *const _ as *const MaybeUninit<_>)).assume_init_read()
         };
 
         arg_refs
