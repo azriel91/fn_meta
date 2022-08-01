@@ -1,5 +1,9 @@
 # Changelog
 
+## unreleased
+
+* Implement `FnMeta`, `FnMetaDyn` for `&()`.
+
 ## 0.7.2 (2022-08-01)
 
 * Implement `FnMeta`, `FnMetaDyn` for `()`.
