@@ -68,6 +68,38 @@ impl FnMetaDyn for () {
     }
 }
 
+impl<'any> FnMeta for &'any () {
+    fn borrows() -> TypeIds
+    where
+        Self: Sized,
+    {
+        TypeIds::new()
+    }
+
+    fn borrow_muts() -> TypeIds
+    where
+        Self: Sized,
+    {
+        TypeIds::new()
+    }
+}
+
+impl<'any> FnMetaDyn for &'any () {
+    fn borrows(&self) -> TypeIds
+    where
+        Self: Sized,
+    {
+        TypeIds::new()
+    }
+
+    fn borrow_muts(&self) -> TypeIds
+    where
+        Self: Sized,
+    {
+        TypeIds::new()
+    }
+}
+
 impl<T> FnMeta for Box<T>
 where
     T: FnMeta,
@@ -157,6 +189,11 @@ mod tests {
         assert_eq!([] as [TypeId; 0], <() as FnMeta>::borrow_muts().as_slice());
         assert_eq!([] as [TypeId; 0], ().borrows().as_slice());
         assert_eq!([] as [TypeId; 0], ().borrow_muts().as_slice());
+
+        assert_eq!([] as [TypeId; 0], <&() as FnMeta>::borrows().as_slice());
+        assert_eq!([] as [TypeId; 0], <&() as FnMeta>::borrow_muts().as_slice());
+        assert_eq!([] as [TypeId; 0], FnMetaDyn::borrows(&&()).as_slice());
+        assert_eq!([] as [TypeId; 0], FnMetaDyn::borrow_muts(&&()).as_slice());
     }
 
     #[test]
