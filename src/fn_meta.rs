@@ -36,6 +36,38 @@ impl<Fun, Ret> FnMeta for FnMetadata<Fun, Ret, ()> {
     }
 }
 
+impl FnMeta for () {
+    fn borrows() -> TypeIds
+    where
+        Self: Sized,
+    {
+        TypeIds::new()
+    }
+
+    fn borrow_muts() -> TypeIds
+    where
+        Self: Sized,
+    {
+        TypeIds::new()
+    }
+}
+
+impl FnMetaDyn for () {
+    fn borrows(&self) -> TypeIds
+    where
+        Self: Sized,
+    {
+        TypeIds::new()
+    }
+
+    fn borrow_muts(&self) -> TypeIds
+    where
+        Self: Sized,
+    {
+        TypeIds::new()
+    }
+}
+
 impl<T> FnMeta for Box<T>
 where
     T: FnMeta,
