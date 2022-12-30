@@ -81,8 +81,8 @@ fn generate_impls_for_n_args<const N: usize>() -> String {
                 } else {
                     arg_refs_iter
                         .try_for_each(|(index, arg_ref)| match arg_ref {
-                            Ref::Immutable => write!(&mut arg_refs_csv, ", &A{}", index),
-                            Ref::Mutable => write!(&mut arg_refs_csv, ", &mut A{}", index),
+                            Ref::Immutable => write!(&mut arg_refs_csv, ", &A{index}"),
+                            Ref::Mutable => write!(&mut arg_refs_csv, ", &mut A{index}"),
                         })
                         .expect("Failed to append to `arg_refs_csv` string.");
                 }
@@ -119,13 +119,6 @@ where
     }}
 }}
 "#,
-                args_csv = args_csv,
-                arg_refs_csv = arg_refs_csv,
-                arg_bounds_list = arg_bounds_list,
-                imm_refs_count = imm_refs_count,
-                imm_ref_arg_ids = imm_ref_arg_ids,
-                mut_refs_count = mut_refs_count,
-                mut_ref_arg_ids = mut_ref_arg_ids,
             )
             .expect("Failed to append to impls_buffer.");
 
@@ -167,9 +160,6 @@ where
     }}
 }}
 "#,
-                args_csv = args_csv,
-                arg_refs_csv = arg_refs_csv,
-                arg_bounds_list = arg_bounds_list,
             )
             .expect("Failed to append to impls_buffer.");
 
@@ -186,11 +176,11 @@ fn mut_ref_arg_ids<const N: usize>(arg_refs: [Ref; N]) -> String {
         .enumerate()
         .filter(|(_, arg_ref)| *arg_ref == Ref::Mutable);
     if let Some((index, _)) = arg_refs_mut_iter.next() {
-        write!(&mut mut_ref_arg_ids, "TypeId::of::<A{}>()", index)
+        write!(&mut mut_ref_arg_ids, "TypeId::of::<A{index}>()")
             .expect("Failed to append to `mut_ref_arg_ids` string.")
     }
     arg_refs_mut_iter
-        .try_for_each(|(index, _)| write!(&mut mut_ref_arg_ids, ", TypeId::of::<A{}>()", index))
+        .try_for_each(|(index, _)| write!(&mut mut_ref_arg_ids, ", TypeId::of::<A{index}>()"))
         .expect("Failed to append to `mut_ref_arg_ids` string.");
     mut_ref_arg_ids
 }
@@ -203,11 +193,11 @@ fn imm_ref_arg_ids<const N: usize>(arg_refs: [Ref; N]) -> String {
         .enumerate()
         .filter(|(_, arg_ref)| *arg_ref == Ref::Immutable);
     if let Some((index, _)) = arg_refs_imm_iter.next() {
-        write!(&mut imm_ref_arg_ids, "TypeId::of::<A{}>()", index)
+        write!(&mut imm_ref_arg_ids, "TypeId::of::<A{index}>()")
             .expect("Failed to append to `imm_ref_arg_ids` string.")
     }
     arg_refs_imm_iter
-        .try_for_each(|(index, _)| write!(&mut imm_ref_arg_ids, ", TypeId::of::<A{}>()", index))
+        .try_for_each(|(index, _)| write!(&mut imm_ref_arg_ids, ", TypeId::of::<A{index}>()"))
         .expect("Failed to append to `imm_ref_arg_ids` string.");
     imm_ref_arg_ids
 }
@@ -264,7 +254,7 @@ fn arg_bounds_list<const N: usize>() -> String {
     let mut arg_bounds_list = String::with_capacity(N * 17);
     arg_bounds_list.push_str("    A0: 'static,");
     (1..N).fold(arg_bounds_list, |mut arg_bounds_list, n| {
-        write!(&mut arg_bounds_list, "\n    A{}: 'static,", n)
+        write!(&mut arg_bounds_list, "\n    A{n}: 'static,")
             .expect("Failed to append to args_csv string.");
         arg_bounds_list
     })
@@ -274,7 +264,7 @@ fn args_csv<const N: usize>() -> String {
     let mut args_csv = String::with_capacity(N * 4);
     args_csv.push_str("A0");
     (1..N).fold(args_csv, |mut args_csv, n| {
-        write!(&mut args_csv, ", A{}", n).expect("Failed to append to args_csv string.");
+        write!(&mut args_csv, ", A{n}").expect("Failed to append to args_csv string.");
         args_csv
     })
 }

@@ -166,11 +166,11 @@ where
     T: FnMetaDyn + ?Sized,
 {
     fn borrows(&self) -> TypeIds {
-        unsafe { (&**self).borrows() }
+        unsafe { (**self).borrows() }
     }
 
     fn borrow_muts(&self) -> TypeIds {
-        unsafe { (&**self).borrow_muts() }
+        unsafe { (**self).borrow_muts() }
     }
 }
 
