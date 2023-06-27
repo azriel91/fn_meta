@@ -44,11 +44,7 @@ jobs:
           toolchain: nightly
           components: clippy
 
-      - # FIXME: Switch back when actions-rs/cargo#217 gets merged
-        uses: r3-os/actions-rust-cargo@fb222fe18dc90e381546d012f9e3d6f353f0f627
-        with:
-          command: clippy
-          args: -- -D warnings
+      - run: cargo clippy -- -D warnings
 
   docs_and_spell_check:
     name: Docs and Spell Check
@@ -99,11 +95,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: dtolnay/rust-toolchain@stable
 
-      - # FIXME: Switch back when actions-rs/cargo#217 gets merged
-        uses: r3-os/actions-rust-cargo@fb222fe18dc90e381546d012f9e3d6f353f0f627
-        with:
-          command: test
-          args: --release --features "fn_meta_ext"
+      - run: cargo test --release --features "fn_meta_ext"
 
   build_and_test_windows:
     name: Build and Test (Windows)
@@ -116,8 +108,4 @@ jobs:
       - uses: actions/checkout@v3
       - uses: dtolnay/rust-toolchain@stable
 
-      - # FIXME: Switch back when actions-rs/cargo#217 gets merged
-        uses: r3-os/actions-rust-cargo@fb222fe18dc90e381546d012f9e3d6f353f0f627
-        with:
-          command: test
-          args: --release --features "fn_meta_ext"
+      - run: cargo test --release --features "fn_meta_ext"
