@@ -1,5 +1,3 @@
-#![cfg(not(tarpaulin_include))]
-
 use std::{env, fmt::Write as _, fs::OpenOptions, io::Write, mem::MaybeUninit, path::Path};
 
 fn main() {
