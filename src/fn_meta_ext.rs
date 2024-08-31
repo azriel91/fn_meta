@@ -48,7 +48,6 @@ where
 impl<Fun, Ret, A, B, C> FnMetaExt<Fun, Ret, (A, B, C)> for Fun
 where
     Fun: FnOnce(A, B, C) -> Ret + FnMetadataExt<Fun, Ret, (A, B, C)> + 'static,
-
     Ret: 'static,
     FnMetadata<Fun, Ret, (A, B, C)>: FnMetaDyn,
     A: 'static,
