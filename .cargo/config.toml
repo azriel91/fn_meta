@@ -1,5 +1,5 @@
 [alias]
 coverage_0 = ["llvm-cov", "nextest", "--no-report", "--output-dir", "./target/coverage"]
 coverage_1 = ["llvm-cov", "nextest", "--no-report", "--output-dir", "./target/coverage", "--features", "fn_meta_ext"]
-coverage_merge = 'llvm-cov --no-run --lcov --output-path ./target/coverage/lcov.info'
-coverage_open = 'llvm-cov --no-run --open --output-dir ./target/coverage'
+coverage_merge = 'llvm-cov report --lcov --output-path ./target/coverage/lcov.info'
+coverage_open = 'llvm-cov report --open --output-dir ./target/coverage'
