@@ -13,6 +13,7 @@ fn fn_metadata_impl(out_dir: &Path) {
     let fn_metadata_impl_path = out_dir.join("fn_metadata_impl.rs");
     let mut fn_metadata_impl = OpenOptions::new()
         .create(true)
+        .truncate(true)
         .write(true)
         .open(fn_metadata_impl_path)
         .expect("Failed to open `fn_metadata_impl.rs`.");
