@@ -2,7 +2,7 @@
 name = "fn_meta"
 version = "0.7.4"
 authors = ["Azriel Hoh <azriel91@gmail.com>"]
-edition = "2021"
+edition = "2024"
 description = "Returns metadata about a function at runtime."
 repository = "https://github.com/azriel91/fn_meta"
 documentation = "https://docs.rs/fn_meta/"
