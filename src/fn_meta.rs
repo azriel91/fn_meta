@@ -68,7 +68,7 @@ impl FnMetaDyn for () {
     }
 }
 
-impl<'any> FnMeta for &'any () {
+impl FnMeta for &() {
     fn borrows() -> TypeIds
     where
         Self: Sized,
@@ -84,7 +84,7 @@ impl<'any> FnMeta for &'any () {
     }
 }
 
-impl<'any> FnMetaDyn for &'any () {
+impl FnMetaDyn for &() {
     fn borrows(&self) -> TypeIds
     where
         Self: Sized,
